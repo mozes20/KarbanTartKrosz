@@ -5,6 +5,8 @@ import { useTable, useSortBy } from 'react-table'
 import MOCK_DATA from '../MOCK_DATA.json'
 import { COLUMNS } from './Columns'
 
+import './Table.css'
+
 const Table = () => {
 
 	const columns = useMemo(() => COLUMNS, [])
@@ -32,7 +34,11 @@ const Table = () => {
 						{headerGroup.headers.map((column) => (
 								<th {...column.getHeaderProps(column.getSortByToggleProps)}> 
 								{column.render('Header')}
-								<ion-icon name={column.isSorted ? (column.isSortedDesc ? 'caret-down-outline':'create-up-outline') : 'funel-outline'}></ion-icon>
+								<span>
+								<ion-icon name={column.isSorted ? (column.isSortedDesc ? 'caret-down-outline':'caret-up-outline') : 'filter-outline'}></ion-icon>
+								</span>
+								
+								
 								</th>
 							))}
 					</tr>

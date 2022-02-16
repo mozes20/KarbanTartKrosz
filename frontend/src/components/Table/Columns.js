@@ -1,26 +1,35 @@
+import { ColumnFilter } from './ColumnFilter'
+
 export const COLUMNS = [
   {
     Header: 'Id',
-    accessor: 'id'
+    accessor: 'id',
+    Filter: ColumnFilter,
+    disableFilters: true
   },
   {
     Header: 'First Name',
-    accessor: 'first_name'
+    accessor: 'first_name',
+    Filter: ColumnFilter
   },
   {
     Header: 'Last Name',
-    accessor: 'last_name'
+    accessor: 'last_name',
+    Filter: ColumnFilter
   },
   {
     Header: 'E-mail',
-    accessor: 'email'
+    accessor: 'email',
+    Filter: ColumnFilter
   },
   {
     Header: 'Job',
-    accessor: 'job'
+    accessor: 'job',
+    Filter: ColumnFilter
   },
   {
     Header: 'Phone Number',
-    accessor: 'phone_number'
+    accessor: 'phone_number',
+    Filter: ColumnFilter,
   },
 ]

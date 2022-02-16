@@ -2,22 +2,24 @@ import React from 'react';
 import { Navbar } from './components';
 import { Table } from './components'
 import { SortingTable } from './components'
+import { FilteringTable } from './components'
+import { PaginationTable } from './components'
 
 import logo from './logo.svg';
 import './App.css';
 
 const App = () => (
-  <div className='bg-grey'>
-    <div className=''>
+  <div >
+    <div >
       <Navbar />
     </div>
 
-    <div className='mt-20 flex justify-center bg-slate-200  w-full h-screen text-black font-bold'>
+    <div className='mt-20 p-5  mx-20 bg-slate-200  text-black font-bold bg-grey '>
 
-        <SortingTable />
-
+      <FilteringTable />
 
     </div>
+
     {/*     <Header />
     <AboutUs />
     <SpecialMenu />

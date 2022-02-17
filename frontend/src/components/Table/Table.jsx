@@ -1,59 +1,52 @@
-import React from 'react'
-import { useMemo } from 'react'
-
-import { useTable, useGlobalFilter, useAsyncDebounce } from 'react-table'
+import React, { useState, useEffect, useMemo } from 'react'
+import { DataGrid } from '@material-ui/data-grid'
 import MOCK_DATA from '../MOCK_DATA.json'
 import { COLUMNS } from './Columns'
+import { ClassNames } from '@emotion/react'
+
+const columns = [
+  { field: 'id', headerName: 'ID', },
+  { field: 'title', headerName: 'Title', width:600},
+  { field: 'body', headerName: 'Body', width: 300 },
+
+]
 
 const Table = () => {
 
-	const columns = useMemo(() => COLUMNS, [])
-	const data = useMemo(() => MOCK_DATA, [])
+  const [tableData, setTableData] = useState([])
+  /*   const columns = useMemo(() => COLUMNS, []) */
 
-	const {
-		getTableProps,
-		getTableBodyProps,
-		headerGroups,
-		rows,
-		prepareRow,
-		state,
-		preGlobalFilterRows,
-		setGlobalFilter,
-	} = useTable({
-		columns,
-		data
-	},
-		useGlobalFilter
-	)
 
-	return (
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then((data) => data.json())
+      .then((data) => setTableData(data))
+  })
 
-		<table {...getTableProps()} border='1'>
-			<thead>
-				{headerGroups.map((headerGroup) => (
-					<tr {...headerGroup.getHeaderGroupProps()}>
-						{
-							headerGroup.headers.map((column) => (
-								<th {...column.getHeaderProps()}> {column.render('Header')} </th>
-							))}
-					</tr>
-				))}
-			</thead>
-			<tbody {...getTableBodyProps()}>
-				{rows.map(row => {
-						prepareRow(row);
-						return(
-							<tr {...row.getRowProps()}>
-								{row.cells.map((cell) => {
-									return <td {...cell.getCellProps()}> {cell.render('Cell')} </td>
-								})}
-						</tr>
-						);
-					})
-				}
-			</tbody>
-		</table>
-	);
+  return (
+    <div style={{ height: 400 }} className='justify-center'>
+      <div style={{ display: 'flex', height: '100%' }} >
+        <div style={{ flexGrow: 1 }}>
+          <DataGrid sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          p: 1,
+          m: 1,
+          bgcolor: 'background.paper',
+          borderRadius: 1,
+        }}
+            rows={tableData}
+            columns={columns}
+            pageSize={10}
+            checkboxSelection
+            rowsPerPageOptions={[10]}
+          />
+        </div>
+      </div>
+    </div>
+
+
+  )
 }
 
 export default Table

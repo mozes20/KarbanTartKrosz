@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 
 const Header = ({ title }) => {
   return(
-    <header className="header">
+    
+    <header className="header mt-20">
       <h1>{title}</h1>
     </header>
   );

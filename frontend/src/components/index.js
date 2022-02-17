@@ -3,7 +3,9 @@ import Table from './Table/Table';
 import FilteringTable from './Table/FilteringTable'
 import DataGrid from './Table/DataGrid'
 import SuperResponsiveTable from './Table/SuperResponsiveTable'
-import Header from './Table/Header';
+import Header from './Header/Header';
+import Footer from './Footer/Footer';
+
 
 export {
   Navbar,
@@ -11,5 +13,6 @@ export {
   FilteringTable,
   DataGrid,
   SuperResponsiveTable,
-  Header
+  Header,
+  Footer
 };

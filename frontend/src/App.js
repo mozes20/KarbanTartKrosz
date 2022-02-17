@@ -1,17 +1,19 @@
-import React, {Fragment} from 'react';
-import { Navbar } from './components';
+import React, {Fragment, useMemo} from 'react';
+import { Footer, Navbar } from './components';
 import { Table } from './components'
 import { FilteringTable } from './components'
 import { DataGrid } from './components'
 import { SuperResponsiveTable } from './components'
-import { StyledEngineProvider } from '@mui/material/styles'
-import Box from '@mui/material/Box'
+
+
+import MOCK_DATA from './components/MOCK_DATA.json'
 
 import {Header} from './components';
-import logo from './logo.svg';
 import './App.scss'
+import { COLUMNS } from './components/Table/Columns';
 
-
+const data = MOCK_DATA
+const columns = COLUMNS
 
 const driversData = [
   {
@@ -64,23 +66,23 @@ const tracksData = [
 const App = () => (
   
   
-  <div >
-
+  <div className='bg-[#2d2d2d]'>
+    <Fragment>
+      <Navbar / >
+    </Fragment>
+    
 
     <Fragment>
-      <Header title="Dynamic &amp; Responsive Table Component" />
+      <Header title="A megszerelők" />
       <SuperResponsiveTable 
-        tableData={driversData}
-        headingColumns={['#', 'Name', 'Team', 'Country', 'Date of birth', 'Place of birth']}
-        title="F1 Drivers 2020"
-      />
-      <SuperResponsiveTable 
-        tableData={tracksData}
-        headingColumns={['Name', 'Country', 'Length(km)', 'Number of laps']}
-        title="Top F1 tracks"
-        breakOn="small"
+        tableData={data}
+        headingColumns={['#', 'first_name', 'last_name', 'email', 'job', 'phone_number']}
+        /* headingColumns={['#', 'Name', 'Team', 'Country', 'Date of birth', 'Place of birth']} */
+        title="Szerelők"
       />
     </Fragment>
+    
+    <Footer />
 
    {/*  <div >
       <Navbar />

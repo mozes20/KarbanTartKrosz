@@ -30,7 +30,7 @@ const Table = ({ tableData, headingColumns, title, breakOn = 'medium' }) => {
   });
 
   return(
-    <div className="table-container">
+    <div className="table-container bg-white">
       <div className="table-container__title">
         <h2>{title}</h2>
       </div>

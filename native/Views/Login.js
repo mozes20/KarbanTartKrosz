@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, TextInput, Image, Button } from 'react-native';
+import { AuthContext } from '../components/context';
 
 const Login = ({ navigation }) => {
     const [name, onChangeName] = React.useState("");
@@ -9,6 +10,8 @@ const Login = ({ navigation }) => {
         navigation.navigate('Home');
     }
 
+    const { signIn } = React.useContext(AuthContext);
+
     return (<>
         <View style={styles.container}>
             <Image
@@ -17,24 +20,24 @@ const Login = ({ navigation }) => {
             />
             <TextInput
                 style={styles.input}
-                onChangeText={onChangeName}
-                placeholder="Name"
+                placeholder="Username"
                 value={name}
+                onChangeText={onChangeName}
                 selectionColor={'black'}
             />
             <TextInput
                 style={styles.input}
-                onChangeText={onChangePassword}
-                value={password}
                 placeholder="Password"
-                secureTextEntry={true}
+                value={password}
+                onChangeText={onChangePassword}
+                secureTextEntry
                 selectionColor={'black'}
             />
             <Button
                 style={styles.button}
-                onPress={onPressLogin}
-                title="LOGIN"
+                title="Log In"
                 color="grey"
+                onPress={() => signIn({ name, password })}
             />
         </View>
     </>

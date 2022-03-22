@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, TextInput, Image, Button } from 'react-native';
+import { AuthContext } from '../components/context';
 
 const Home = ({ navigation }) => {
     const [name, onChangeName] = React.useState("");
@@ -9,11 +10,18 @@ const Home = ({ navigation }) => {
         navigation.navigate('Login');
     }
 
+    const { signOut } = React.useContext(AuthContext);
+
     return (<>
         <View style={styles.container}>
             <Image
                 style={styles.logo}
                 source={require('../assets/logo.png')}
+            />
+            <Button
+                title="Log Out"
+                color="grey"
+                onPress={() => signOut()}
             />
         </View>
     </>

@@ -10,13 +10,16 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-navigation/drawer": "^6.3.1",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
+    "@react-navigation/stack": "^6.1.1",
+    "axios": "^0.26.1",
     "expo": "~44.0.0",
     "expo-status-bar": "~1.2.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "react-native": "0.64.3",
+    "react-native": "^0.64.3",
     "react-native-gesture-handler": "https://github.com/software-mansion/react-native-gesture-handler#62e9eb66bced3b4c55042399d761baee7d961140",
     "react-native-reanimated": "1.13.2",
     "react-native-safe-area-context": "3.3.2",

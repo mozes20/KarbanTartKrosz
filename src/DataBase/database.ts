@@ -10,19 +10,20 @@ export default class DataBase {
     }
 
     async connectEstablisd(): Promise<void> {
+        /*
         this.db = await connect("mongodb://mongodb_container:27017/Pannonbioolaj",
             {
                 authSource: "admin",
                 user: "root",
                 pass: "rootpassword"
+            });*/
+
+        this.db = await connect("mongodb://localhost:27019/RendszerFejlesztes",
+            {
+                authSource: "admin",
+                user: "root",
+                pass: "rootpassword"
             });
-        /*
-    this.db = await connect("mongodb://localhost:27018/Pannonbioolaj",
-        {
-            authSource: "admin",
-            user: "root",
-            pass: "rootpassword"
-        });*/
     }
 
 }

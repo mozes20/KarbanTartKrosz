@@ -1,7 +1,12 @@
 import express from 'express';
 import DataBase from './DataBase/database';
-import Auth from './Auth/auth';
+import allroutes from './Routes'
+import Auth from './Auth/Auth';
 var jwt = require('jsonwebtoken');
+
+
+
+
 const app = express();
 express.Router()
 app.use(express.json());
@@ -10,7 +15,7 @@ const port = 5000;
 let data: DataBase = new DataBase();
 let auth: Auth = new Auth();
 
-
+/*
 const token = jwt.sign(
   { user_id: "Mozes", email: "Proba" },
   "anyad",
@@ -18,18 +23,13 @@ const token = jwt.sign(
     expiresIn: "2h",
   }
 );
-console.log(token)
-///console.log(data.createNewAdministrator({username:"mozes",password:"asd",permission:1}))
-
-app.get('/', (req, res) => {
-  //let probaAdatok: UserType = { username: "Proba", password: "Proba", permission: 1 }
-  /* data.tryGetLoginData("Mozes","Proba").then(d => {
-       res.json(d)
-   }).catch( e => {
-       throw e
-   })*/
+console.log(token)*/
+app.use(allroutes)
+/*
+app.post('/login', [auth.verifyToken], (req: any, res: any) => {
+  res.send(req.body)
 });
-
+*/
 
 
 app.listen(port, () => {

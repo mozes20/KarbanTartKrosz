@@ -14,10 +14,10 @@ const Login = ({ navigation }) => {
 
     return (<>
         <View style={styles.container}>
-            <Image
+            {<Image
                 style={styles.logo}
                 source={require('../assets/logo.png')}
-            />
+            />}
             <TextInput
                 style={styles.input}
                 placeholder="Username"

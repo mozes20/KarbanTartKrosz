@@ -9,8 +9,10 @@ import Navigator from './Routes/Stack';
 import Login from './Views/Login';
 import Home from './Views/Home';
 import axios from 'axios';
+import { AsyncStorage } from 'react-native';
 
 const baseUrl = 'http://168.119.57.253:5001/auth';
+
 
 function SplashScreen() {
   return (
@@ -19,6 +21,7 @@ function SplashScreen() {
     </View>
   );
 }
+
 
 const Stack = createStackNavigator();
 
@@ -77,13 +80,27 @@ export default function App({ navigation }) {
 
   const authContext = React.useMemo(
     () => ({
-      signIn: async (data) => {
+      signIn: (data) => {
         axios.post(`${baseUrl}/login`, {
           username: data.name,
           password: data.password
         }).then((response) => {
+          const _storeData = async () => {
+            try {
+              await AsyncStorage.setItem(
+                '@MySuperStore:key',
+                'I like to save it.'
+              );
+            } catch (error) {
+              // Error saving data
+            }
+          };
+
+          _storeData;
           console.log(response.data);
-          dispatch({ type: 'SIGN_IN', token: response.data.token });
+          dispatch({
+            type: 'SIGN_IN', token: response.data.token
+          });
         });
 
 

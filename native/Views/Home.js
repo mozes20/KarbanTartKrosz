@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, TextInput, Image, Button } from 'react-native';
+import { StyleSheet, View, TextInput, Image, Button, ImageBackground, Dimensions } from 'react-native';
 import { AuthContext } from '../components/context';
+import { Table } from '../components/Table';
+import { AsyncStorage } from 'react-native';
 
 const Home = ({ navigation }) => {
     const [name, onChangeName] = React.useState("");
@@ -10,19 +12,37 @@ const Home = ({ navigation }) => {
         navigation.navigate('Login');
     }
 
+
+
+    React.useEffect(() => {
+        const _retrieveData = async () => {
+            try {
+                const value = await AsyncStorage.getItem('@MySuperStore:key');
+                if (value !== null) {
+                    // We have data!!
+                    console.log(value);
+                }
+            } catch (error) {
+                // Error retrieving data
+            }
+        };
+        _retrieveData
+    });
+
     const { signOut } = React.useContext(AuthContext);
 
     return (<>
         <View style={styles.container}>
-            <Image
-                style={styles.logo}
-                source={require('../assets/logo.png')}
-            />
-            <Button
-                title="Log Out"
-                color="grey"
-                onPress={() => signOut()}
-            />
+            <ImageBackground source={require('../assets/back_logo.png')} resizeMode="cover" style={styles.logo}>
+                <View style={styles.tablecontainer}>
+                    {/* <Table></Table> */}
+                </View>
+                <Button
+                    title="Log Out"
+                    color="grey"
+                    onPress={() => signOut()}
+                />
+            </ImageBackground>
         </View>
     </>
     );
@@ -43,11 +63,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flex: 1,
-        backgroundColor: `#333333`
+        width: Dimensions.get('window').width,
+        backgroundColor: `#333333`,
     },
     logo: {
-        width: 200,
-        height: 150
+        flex: 1,
+        justifyContent: "center",
+        alignItems: 'center',
+        width: Dimensions.get('window').width,
+    },
+    tablecontainer: {
+        width: Dimensions.get('window').width,
+        maxHeight: Dimensions.get('window').height / 1.2,
+        overflow: 'scroll',
+        //margin: '20px'
     }
 });
 

@@ -20,7 +20,7 @@ export default class Auth {
 
   verifyPermission(req: any, res: any, next: any) {
 
-
+    //todo megcsinálni
     return next();
   }
 

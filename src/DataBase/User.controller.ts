@@ -74,6 +74,17 @@ export class UserDbController {
 
     }
 
+    getAllSkilledWorker(req: any, res: any, next: any) {
+        _User.find({ Permission: 3 }).then(users => {
+            if (users.length == 0) {
+                return res.status(201).send({ message: "No users found" })
+            }
+            return res.status(200).send({ data: users })
+        }).catch(err => {
+            return res.status(201).send({ message: err })
+        })
+    }
+
 
 
 

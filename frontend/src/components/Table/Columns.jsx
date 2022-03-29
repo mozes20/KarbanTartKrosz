@@ -7,6 +7,6 @@ export const COLUMNS = [
 		} 
 	},
 	{ title: 'Name', field: 'name' },
-	{ title: 'Email', field: 'email' },
-	{ title: 'Status', field: 'status' },
+	{ title: 'Location', field: 'location' },
+	{ title: 'Category', field: 'category' },
 ]

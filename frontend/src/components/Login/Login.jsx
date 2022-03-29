@@ -12,7 +12,7 @@ const Login = () => {
 
 	const navigate = useNavigate();
 	const location = useLocation();
-	const from = location.stage?.from?.pathname || '/';
+	const from = location.state?.from?.pathname || "/";
 	const userRef = useRef();
 	const errRef = useRef();
 
@@ -39,12 +39,9 @@ const Login = () => {
 			/* 			
 						const roles = response?.data?.roles; */
 			setAuth({ user, password, token });
-			console.log("1");
 			setUser('');
 			setPwd('');
-			console.log("2");
 			navigate(from, { replace: true });
-			console.log("3");
 		} catch (error) {
 			if (!error?.respone) {
 				setErrMsg('Nop server response');

@@ -12,10 +12,14 @@ const empList = [
 	{ id: 4, name: 'Bence', email: 'exmp4@asd.com', status: 1 },
 ]
 
+const toolList = [
+	{id: 1, name: 'Utvefuro', location: 'Hungary', category: 1},
+]
+
 const AdminTable = () => {
 
 	const columns = useMemo(() => COLUMNS, [])
-	const [data, setData] = useState(empList)
+	const [data, setData] = useState(toolList)
 
 	const theme = createTheme({
 		palette: {
@@ -24,15 +28,15 @@ const AdminTable = () => {
 	});
 
 	return (
-		<div>
+		<div className='mt-40'>
 				<MaterialTable
-					title='Employees'
+					title='Tools'
 					data={data}
 					columns={columns}
 					editable={{
 						onRowAdd: (newRow) =>
 							new Promise((resolve, reject) => {
-								const updatedRows = [...data, { id: 6, ...newRow }]
+								const updatedRows = [...data, {id: 5,  ...newRow }]
 								setTimeout(() => {
 									setData(updatedRows)
 									resolve()

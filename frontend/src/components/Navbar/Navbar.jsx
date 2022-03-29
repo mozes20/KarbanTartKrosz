@@ -6,9 +6,9 @@ import './Navbar.css'
 
 function Navbar() {
   let Links = [
-    { name: "HOME", link: "/" },
+    { name: "HOME", link: "/home" },
     { name: "TABLE", link: "/admintable" },
-    { name: "ABOUT", link: "/" },
+    { name: "ADMIN", link: "/" },
     { name: "LOGIN", link: "/login" },
   ];
   let [open, setOpen] = useState(false);

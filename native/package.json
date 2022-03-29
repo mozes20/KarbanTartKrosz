@@ -9,12 +9,14 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-navigation/drawer": "^6.3.1",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
     "@react-navigation/stack": "^6.1.1",
     "axios": "^0.26.1",
     "expo": "~44.0.0",
+    "expo-secure-store": "~11.1.0",
     "expo-splash-screen": "~0.14.1",
     "expo-status-bar": "~1.2.0",
     "react": "17.0.1",
@@ -27,10 +29,7 @@
     "react-native-sensitive-info": "^5.5.8",
     "react-native-vector-icons": "^9.1.0",
     "react-native-web": "0.17.1",
-    "react-navigation-stack": "^2.10.4",
-    "react-table": "^7.7.0",
-    "expo-secure-store": "~11.1.0",
-    "@react-native-async-storage/async-storage": "~1.15.0"
+    "react-navigation-stack": "^2.10.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

@@ -1,51 +1,81 @@
-import React, { useMemo } from "react";
-import { StyleSheet } from 'react-native';
-import { useTable } from 'react-table';
+import React, { useMemo, Component } from "react";
+import { StyleSheet, View, TextInput, Image, Button, ImageBackground, Dimensions, Text } from 'react-native';
 import MOCK_DATA from './MOCK_DATA.json';
-import { COLUMNS } from "./columns";
-//import style from "../components/table.css";
+import { FlatList } from "react-native-gesture-handler";
 
 export const Table = () => {
 
-    const columns = useMemo(() => COLUMNS, [])
-    const data = useMemo(() => MOCK_DATA, [])
+    const data = useMemo(() => MOCK_DATA, []);
 
-    const tableInstance = useTable({
-        columns,
-        data
-    })
-
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        rows,
-        prepareRow
-    } = tableInstance
+    const item = ({ item }) => {
+        return (
+            <View style={{ flexDirection: 'row' }}>
+                <View style={styles.cell}>
+                    <Text style={styles.cellcolor}>{item.id}</Text>
+                </View>
+                <View style={styles.cell}>
+                    <Text style={styles.cellcolor}>{item.first_name}</Text>
+                </View>
+                <View style={styles.cell}>
+                    <Text style={styles.cellcolor}>{item.last_name}</Text>
+                </View>
+            </View>
+        );
+    }
 
     return (
-        <table {...getTableProps()} >
-            <thead>
-                {headerGroups.map((headerGroup) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                        {headerGroup.headers.map((column) => (
-                            <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-                        ))}
-                    </tr>
-                ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-                {rows.map((row) => {
-                    prepareRow(row)
-                    return (
-                        <tr {...row.getRowProps()}>
-                            {row.cells.map((cell) => {
-                                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                            })}
-                        </tr>
-                    )
-                })}
-            </tbody>
-        </table>
+        <View>
+            <View style={styles.main}>
+                <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.header}>
+                        <Text style={styles.headercolor}>Id</Text>
+                    </View>
+                    <View style={styles.header}>
+                        <Text style={styles.headercolor}>First Name</Text>
+                    </View>
+                    <View style={styles.header}>
+                        <Text style={styles.headercolor}>Last Name</Text>
+                    </View>
+                </View>
+                <FlatList
+                    data={data}
+                    renderItem={item}
+                    keyExtractor={(item, index) => index.toString()}
+                    contentContainerStyle={{
+                        flexGrow: 1,
+                    }}
+                />
+            </View>
+        </View>
     )
 }
+const styles = StyleSheet.create({
+    main: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 10,
+        //maxHeight: Dimensions.get('window').height / 1.3
+        maxHeight: 600
+    },
+    header: {
+        width: Dimensions.get('window').width / 3 - 5,
+        backgroundColor: 'rgba(100, 100, 100, 0.5)',
+        textAlign: 'center'
+    },
+    cell: {
+        width: Dimensions.get('window').width / 3 - 5,
+        backgroundColor: 'rgba(200, 200, 200, 0.5)',
+        textAlign: 'center'
+    },
+    cellcolor: {
+        color: 'black',
+        fontSize: 16,
+        fontWeight: 'bold'
+    },
+    headercolor: {
+        color: 'white',
+        fontSize: 20,
+        fontWeight: 'bold'
+    }
+});

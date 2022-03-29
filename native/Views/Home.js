@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, TextInput, Image, Button, ImageBackground, Dimensions } from 'react-native';
+import { StyleSheet, View, TextInput, Image, Button, ImageBackground, Dimensions, Text } from 'react-native';
 import { AuthContext } from '../components/context';
 import { Table } from '../components/Table';
 import { AsyncStorage } from 'react-native';
@@ -11,8 +11,6 @@ const Home = ({ navigation }) => {
     const onPressLogin = () => {
         navigation.navigate('Login');
     }
-
-
 
     React.useEffect(() => {
         const _retrieveData = async () => {
@@ -35,7 +33,7 @@ const Home = ({ navigation }) => {
         <View style={styles.container}>
             <ImageBackground source={require('../assets/back_logo.png')} resizeMode="cover" style={styles.logo}>
                 <View style={styles.tablecontainer}>
-                    {/* <Table></Table> */}
+                    <Table></Table>
                 </View>
                 <Button
                     title="Log Out"

@@ -1,14 +1,15 @@
 import React from 'react'
 import { useState } from 'react'
+import { Outlet, Link } from "react-router-dom";
 
 import './Navbar.css'
 
 function Navbar() {
   let Links = [
     { name: "HOME", link: "/" },
-    { name: "SERVICE", link: "/" },
+    { name: "TABLE", link: "/admintable" },
     { name: "ABOUT", link: "/" },
-    { name: "CONTACT", link: "/" },
+    { name: "LOGIN", link: "/login" },
   ];
   let [open, setOpen] = useState(false);
 
@@ -32,7 +33,7 @@ function Navbar() {
           {
             Links.map((link) => (
               <li key={link.name} className='md:ml-8 text-xl md:my-0 my-7'>
-                <a href={link.link} className='text-gray-800 hover:text-gray-400 duration-300' >{link.name}</a>
+                <Link to={link.link} className='text-gray-800 hover:text-gray-400 duration-300' >{link.name}</Link>
               </li>
             ))
           }
@@ -40,6 +41,7 @@ function Navbar() {
 
       </div>
     </div>
+    
   )
 }
 

@@ -3,6 +3,9 @@ import { StyleSheet, View, TextInput, Image, Button, ImageBackground, Dimensions
 import { AuthContext } from '../components/context';
 import { Table } from '../components/Table';
 import { AsyncStorage } from 'react-native';
+import axios from 'axios';
+
+const baseUrl = 'http://168.119.57.253:5001/auth';
 
 const Home = ({ navigation }) => {
     const [name, onChangeName] = React.useState("");
@@ -12,20 +15,21 @@ const Home = ({ navigation }) => {
         navigation.navigate('Login');
     }
 
-    React.useEffect(() => {
-        const _retrieveData = async () => {
-            try {
-                const value = await AsyncStorage.getItem('@MySuperStore:key');
-                if (value !== null) {
-                    // We have data!!
-                    console.log(value);
-                }
-            } catch (error) {
-                // Error retrieving data
+    React.useEffect(async () => {
+        try {
+            const value = await AsyncStorage.getItem('@MySuperStore:key');
+            if (value !== null) {
+                // We have data!!
+                console.log(value);
             }
-        };
-        _retrieveData
-    });
+        } catch (error) {
+            // Error retrieving data
+        }
+
+        axios.get(`${baseUrl}/category`).then((response) => {
+            console.log(response);
+        });
+    })
 
     const { signOut } = React.useContext(AuthContext);
 

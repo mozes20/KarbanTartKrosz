@@ -3,8 +3,8 @@ import { StyleSheet, View, TextInput, Image, Button } from 'react-native';
 import { AuthContext } from '../components/context';
 
 const Login = ({ navigation }) => {
-    const [name, onChangeName] = React.useState("");
-    const [password, onChangePassword] = React.useState("");
+    const [name, onChangeName] = React.useState("test1");
+    const [password, onChangePassword] = React.useState("test1");
 
     const onPressLogin = () => {
         navigation.navigate('Home');

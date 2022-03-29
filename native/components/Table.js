@@ -11,13 +11,13 @@ export const Table = () => {
         return (
             <View style={{ flexDirection: 'row' }}>
                 <View style={styles.cell}>
-                    <Text style={styles.cellcolor}>{item.id}</Text>
+                    <Text style={styles.cellcolor}>{item.name}</Text>
                 </View>
                 <View style={styles.cell}>
-                    <Text style={styles.cellcolor}>{item.first_name}</Text>
+                    <Text style={styles.cellcolor}>{item.location}</Text>
                 </View>
                 <View style={styles.cell}>
-                    <Text style={styles.cellcolor}>{item.last_name}</Text>
+                    <Text style={styles.cellcolor}>{item.category}</Text>
                 </View>
             </View>
         );
@@ -28,13 +28,13 @@ export const Table = () => {
             <View style={styles.main}>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={styles.header}>
-                        <Text style={styles.headercolor}>Id</Text>
+                        <Text style={styles.headercolor}>Name</Text>
                     </View>
                     <View style={styles.header}>
-                        <Text style={styles.headercolor}>First Name</Text>
+                        <Text style={styles.headercolor}>Location</Text>
                     </View>
                     <View style={styles.header}>
-                        <Text style={styles.headercolor}>Last Name</Text>
+                        <Text style={styles.headercolor}>Category</Text>
                     </View>
                 </View>
                 <FlatList

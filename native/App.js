@@ -84,19 +84,16 @@ export default function App({ navigation }) {
         axios.post(`${baseUrl}/login`, {
           username: data.name,
           password: data.password
-        }).then((response) => {
-          const _storeData = async () => {
-            try {
-              await AsyncStorage.setItem(
-                '@MySuperStore:key',
-                'I like to save it.'
-              );
-            } catch (error) {
-              // Error saving data
-            }
-          };
+        }).then(async (response) => {
+          try {
+            await AsyncStorage.setItem(
+              '@token',
+              response?.data?.token
+            );
+          } catch (error) {
+            // Error saving data
+          }
 
-          _storeData;
           console.log(response.data);
           dispatch({
             type: 'SIGN_IN', token: response.data.token

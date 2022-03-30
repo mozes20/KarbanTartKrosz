@@ -15,20 +15,23 @@ const Home = ({ navigation }) => {
         navigation.navigate('Login');
     }
 
-    React.useEffect(async () => {
+    React.useEffect(() => {
         try {
-            const value = await AsyncStorage.getItem('@MySuperStore:key');
-            if (value !== null) {
-                // We have data!!
-                console.log(value);
-            }
+            AsyncStorage.getItem('@token').then((value) => {
+                if (value !== null) {
+                    // We have data!!
+                    console.log(value);
+
+                    axios.get(`${baseUrl}/maincategory`, { params: { token: value.toString() } }).then((response) => {
+                        console.log(response.data);
+                    });
+                }
+            })
+
         } catch (error) {
             // Error retrieving data
+            console.log(error);
         }
-
-        axios.get(`${baseUrl}/category`).then((response) => {
-            console.log(response);
-        });
     })
 
     const { signOut } = React.useContext(AuthContext);

@@ -5,34 +5,9 @@ import { Table } from '../components/Table';
 import { AsyncStorage } from 'react-native';
 import axios from 'axios';
 
-const baseUrl = 'http://168.119.57.253:5001/auth';
-
 const Home = ({ navigation }) => {
     const [name, onChangeName] = React.useState("");
     const [password, onChangePassword] = React.useState("");
-
-    const onPressLogin = () => {
-        navigation.navigate('Login');
-    }
-
-    React.useEffect(() => {
-        try {
-            AsyncStorage.getItem('@token').then((value) => {
-                if (value !== null) {
-                    // We have data!!
-                    console.log(value);
-
-                    axios.get(`${baseUrl}/maincategory`, { params: { token: value.toString() } }).then((response) => {
-                        console.log(response.data);
-                    });
-                }
-            })
-
-        } catch (error) {
-            // Error retrieving data
-            console.log(error);
-        }
-    })
 
     const { signOut } = React.useContext(AuthContext);
 

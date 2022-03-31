@@ -7,6 +7,8 @@ import Login from './components/Login/Login';
 import Layout from './components/Layout';
 import HomePage from './components/HomePage';
 import RequireAuth from './components/RequireAuth';
+import { Admin } from './components/Admin';
+import Dropdown from './components/Dropdown';
 
 
 const App = () => (
@@ -19,6 +21,7 @@ const App = () => (
       <Route path="/" element={<Layout />}>
         <Route path='login' element={<Login />} />
         <Route path='home' element={<HomePage />} />
+        <Route path='categories' element={<Dropdown />} />
         <Route element={<RequireAuth />}>
           <Route path="admintable" element={<AdminTable />} />
         </Route>

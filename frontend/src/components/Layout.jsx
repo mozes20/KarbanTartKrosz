@@ -1,10 +1,8 @@
 import { Outlet, Link } from "react-router-dom";
-import HomePage from "./HomePage";
-import Navbar from "./Navbar/Navbar";
+import React from 'react';
 
 const Layout = () => {
   return (
-
     <div>
       <main>
           <Outlet />

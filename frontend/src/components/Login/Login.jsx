@@ -4,7 +4,7 @@ import useAuth from '../../hooks/useAuth';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import axios from '../../api/axios';
-const LOGIN_URL = '/auth/login';
+const LOGIN_URL = '/login';
 
 const Login = () => {
 
@@ -36,6 +36,12 @@ const Login = () => {
 			);
 			console.log(response?.data?.token);
 			const token = response?.data?.token;
+			localStorage.setItem('token', token);
+			console.log(response?.data)
+			const response2 = await axios.get('/maincategory',
+				{ params: {token:token} }
+			);
+			console.log(response2?.data)
 			/* 			
 						const roles = response?.data?.roles; */
 			setAuth({ user, password, token });

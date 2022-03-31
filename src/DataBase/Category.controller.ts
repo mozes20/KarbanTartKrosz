@@ -59,7 +59,7 @@ export class CategoryDbController {
     }
 
     async getUndercategory(req: any, res: any, next: any) {
-        _Maincategory.find({ _id: req.body.maincategory }).populate({ path: 'categorys' }).then(data => {
+        _Maincategory.find({ _id: req.query.maincategory }).populate({ path: 'categorys' }).then(data => {
             if (data === null) {
                 return res.status(400).send({ message: "Category not found" })
             } else {
@@ -69,7 +69,7 @@ export class CategoryDbController {
     }
 
     async getAllDeviceFromUnderCategory(req: any, res: any, next: any) {
-        _Category.find({ _id: req.body.category }).populate({ path: 'devices' }).then(data => {
+        _Category.find({ _id: req.query.category }).populate({ path: 'devices' }).then(data => {
             if (data === null) {
                 return res.status(400).send({ message: "Devices not found" })
             } else {

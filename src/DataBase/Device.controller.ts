@@ -31,7 +31,7 @@ export class DeviceDbController {
     }
 
     getDeviceById(req: any, res: any, next: any) {
-        let id = req.body.id;
+        let id = req.query.id;
         _Device.findById(id).then(Device => {
             if (Device === null) {
                 return res.status(400).send({ message: "Device Was Not Found" })

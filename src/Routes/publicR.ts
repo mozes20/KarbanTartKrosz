@@ -1,6 +1,7 @@
 import { CategoryDbController } from './../DataBase/Category.controller';
 import { UserDbController } from './../DataBase/User.controller';
 import { DeviceDbController } from './../DataBase/Device.controller';
+import { SkillDbController } from './../DataBase/Skills.controller';
 import { Router } from "express";
 import Auth from '../Auth/Auth';
 
@@ -8,7 +9,9 @@ const router = Router();
 const userController = new UserDbController();
 const DeviceController = new DeviceDbController();
 const CategoryController = new CategoryDbController();
+const SkillController = new SkillDbController();
 const auth = new Auth();
+
 //Publikus útvonalak
 router.post("/login", userController.login);
 router.post("/register", userController.registration);
@@ -19,4 +22,7 @@ router.get("/maincategory", [auth.verifyToken], CategoryController.getMainCatego
 router.post("/maincategory", [auth.verifyToken], CategoryController.addNewMainCategory);
 router.post("/category", [auth.verifyToken], CategoryController.addUnderCategory);
 router.get("/category", [auth.verifyToken], CategoryController.getUndercategory);
+router.post("/skill", SkillController.addSkill);
+router.get("/skill", SkillController.getSkillById);
+router.get("/skillname", SkillController.getSkillByName);
 export default router;

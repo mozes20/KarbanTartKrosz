@@ -2,6 +2,7 @@ import express from 'express';
 import DataBase from './DataBase/database';
 import allroutes from './Routes'
 import Auth from './Auth/Auth';
+import cors from 'cors'
 var jwt = require('jsonwebtoken');
 
 
@@ -24,7 +25,9 @@ const token = jwt.sign(
   }
 );
 console.log(token)*/
+app.use(cors())
 app.use(allroutes)
+
 /*
 app.post('/login', [auth.verifyToken], (req: any, res: any) => {
   res.send(req.body)

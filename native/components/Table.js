@@ -2,7 +2,8 @@ import React, { useMemo, Component } from "react";
 import { StyleSheet, View, TextInput, Image, Button, ImageBackground, Dimensions, Text, TouchableOpacity } from 'react-native';
 import MOCK_DATA from './MOCK_DATA.json';
 import { FlatList } from "react-native-gesture-handler";
-import { AsyncStorage } from 'react-native';
+//import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
 const baseUrl = 'http://168.119.57.253:5001/auth';
@@ -64,19 +65,17 @@ export const Table = () => {
                     </View>
                 </TouchableOpacity>
                 {expanded.includes(item._id) ? (
-                    <TouchableOpacity onPress={() => null}>
-                        <View style={{ flexDirection: 'row' }}>
-                            <View style={styles.cell}>
-                                <Text style={styles.cellcolor2}>{item.categorys}</Text>
-                            </View>
-                            <View style={styles.cell}>
-                                <Text style={styles.cellcolor}>{item.location}</Text>
-                            </View>
-                            <View style={styles.cell}>
-                                <Text style={styles.cellcolor}>{item.category}</Text>
-                            </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={styles.cell}>
+                            <Text style={styles.cellcolor2}>{item.categorys}</Text>
                         </View>
-                    </TouchableOpacity>
+                        <View style={styles.cell}>
+                            <Text style={styles.cellcolor}>{item.location}</Text>
+                        </View>
+                        <View style={styles.cell}>
+                            <Text style={styles.cellcolor}>{item.category}</Text>
+                        </View>
+                    </View>
                 ) : (
                     null
                 )}

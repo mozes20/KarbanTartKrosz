@@ -9,7 +9,8 @@ import Navigator from './Routes/Stack';
 import Login from './Views/Login';
 import Home from './Views/Home';
 import axios from 'axios';
-import { AsyncStorage } from 'react-native';
+//import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const baseUrl = 'http://168.119.57.253:5001/auth';
 

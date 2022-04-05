@@ -21,9 +21,10 @@ const App = () => (
       <Route path="/" element={<Layout />}>
         <Route path='login' element={<Login />} />
         <Route path='home' element={<HomePage />} />
-        <Route path='categories' element={<Dropdown />} />
+        
         <Route element={<RequireAuth />}>
           <Route path="admintable" element={<AdminTable />} />
+          <Route path='categories' element={<Dropdown />} />
         </Route>
       </Route>
     </Routes>

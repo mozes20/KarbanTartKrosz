@@ -98,7 +98,7 @@ const AdminTable = () => {
 						title: 'Category',
 						field: 'Category',
 						render: rowData => dataName,
-						lookup: {'0':'hidd el mukodik', '1':'szavasz'},
+						lookup: {'0':'hidd el mukodik', '1':'szia bence', '2':'dfg'},
 					},
 				])}
 				editable={{

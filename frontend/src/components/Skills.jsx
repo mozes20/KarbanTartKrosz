@@ -1,36 +1,163 @@
 import React from 'react'
 
-import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
+import TextField from '@mui/material/TextField';
+import Card from '@mui/material/Card';
+import axios from '../api/axios';
 
 const Skills = () => {
-	const [age, setAge] = React.useState('');
+	const [category, setCategory] = React.useState('');
+	const [data, setData] = React.useState([]);
+	const [ids, setIds] = React.useState([]);
+	const [names, setNames] = React.useState([]);
+	const [canLoad, setCanLoad] = React.useState(false)
+	const [loaded, setLoaded] = React.useState(0)
 
-	const handleChange = (event) => {
-		setAge(event.target.value);
+
+	React.useEffect(async () => {
+		console.log("useeffect -0")
+		setIds([])
+		const URL = '/maincategory';
+		await axios.get(URL, {
+			params:
+			{
+				token: localStorage.getItem('token')
+			}
+		})
+			.then((response) => {
+				response?.data?.map((d) => {
+					setIds(ids => [...ids, d._id])
+				})
+				console.log('asd')
+			})
+
+	}, [])
+
+	React.useEffect(async () => {
+		console.log('useEffec-1')
+		setNames([])
+		ids.map((id) => {
+			axios.get('/category', {
+				params:
+				{
+					maincategory: id,
+					token: localStorage.getItem('token')
+				}
+			})
+				.then((response) => {
+					response?.data[0].categorys.map((category) => {
+						setNames(names => [...names, category.Name])
+						setCanLoad(true)
+					})
+				})
+		})
+
+		console.log(canLoad) 
+		 names.map((names)=>(console.log("name: " + names)))
+	}, [])
+
+
+	const load = () => {
+		if(loaded > 1){
+			return
+		}
+		setLoaded(loaded+1)
+		setIds([])
+		const URL = '/maincategory';
+		axios.get(URL, {
+			params:
+			{
+				token: localStorage.getItem('token')
+			}
+		})
+			.then((response) => {
+				response?.data?.map((d) => {
+					setIds(ids => [...ids, d._id])
+				})
+				setNames([])
+				ids.map((id) => {
+					axios.get('/category', {
+						params:
+						{
+							maincategory: id,
+							token: localStorage.getItem('token')
+						}
+					})
+						.then((response) => {
+							response?.data[0].categorys.map((category) => {
+								setNames(names => [...names, category.Name])
+							})
+						})
+				})
+				console.log('asd')
+			})
+
+	
 	};
+	const handleChange = (event) => {
+		setCategory(event.target.value);
+	};
+
+	const buttonClick = () => {
+		if(!canLoad){
+			load()
+		}
+		setCanLoad(!canLoad)
+	}
 	return (
 		<div >
-			<Box sx={{ minWidth: 120 }} className='bg-white'>
-				<FormControl fullWidth >
-					<InputLabel id="demo-simple-select-label">Age</InputLabel>
-					<Select
-						labelId="demo-simple-select-label"
-						id="demo-simple-select"
-						value={age}
-						label="Age"
-						onChange={handleChange}
-					>
-						<MenuItem value={10}>Ten</MenuItem>
-						<MenuItem value={20}>Twenty</MenuItem>
-						<MenuItem value={30}>Thirty</MenuItem>
-					</Select>
-				</FormControl>
-			</Box>
+			<Card sx={{ minWidth: 120 }} className='bg-white p-2'>
+				{!canLoad ? <button className="bg-gray-500 hover:bg-gray-700 text-white text-sm font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={buttonClick} >
+					ATTACH SKILL
+				</button>
+					:
+					<div>
+						<div className='flex justify-end'>
+							<button className="bg-gray-500 hover:bg-gray-700 text-white text-sm font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline " onClick={buttonClick} >
+								CLOSE
+							</button>
+						</div>
+
+						<div className='mb-4'>
+							<label htmlFor="addskill" className=' text-gray-700 text-sm font-bold mx-2 mb-10'>Add skill</label>
+						</div>
+						<div>
+							<FormControl fullWidth >
+								<InputLabel id="demo-simple-select-label mt-10">Category</InputLabel>
+								<Select
+									labelId="demo-simple-select-label"
+									id="demo-simple-select"
+									value={category}
+									label="Category"
+									onChange={handleChange}
+								>
+									
+									{
+										names?.map((name) => (
+											<MenuItem value={name}>{name}</MenuItem>
+										))
+									}
+								</Select>
+							</FormControl>
+						</div>
+						<div className='mt-4'>
+							<TextField label="Skill" color='grey' focused />
+						</div>
+						<div className='flex justify-end my-2'>
+							<button className="bg-gray-500 hover:bg-gray-700 text-white text-sm font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" >
+								ATTACH SKILL
+							</button>
+						</div>
+
+					</div>
+				}
+
+
+			</Card>
+
 		</div>
 	)
 }

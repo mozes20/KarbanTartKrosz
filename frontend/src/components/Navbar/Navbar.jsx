@@ -8,7 +8,7 @@ function Navbar() {
   let Links = [
     { name: "HOME", link: "/home" },
     { name: "TABLE", link: "/admintable" },
-    { name: "CATEGORIES", link: "/categories" },
+    { name: "ADMIN", link: "/categories" },
     { name: "LOGIN", link: "/login" },
   ];
   let [open, setOpen] = useState(false);

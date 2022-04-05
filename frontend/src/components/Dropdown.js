@@ -100,7 +100,7 @@ const Dropdown = () => {
 	return (
 		<div >
 			<div className=' mt-10 justify-center flex'>
-				<div className='flex'>
+				<div className='flex mr-20'>
 					<Skills />
 				</div>
 					<List

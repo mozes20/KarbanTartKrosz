@@ -85,4 +85,17 @@ export class UserDbController {
         })
     }
 
+
+    getUserRole(user:any):any{
+        let retPerm;
+        let userToFind=user;
+        retPerm = _User.findOne({ _id: userToFind }).then(users => {
+            if (users===null) {
+                return 0;
+            }
+            return users.Permission;
+        })
+        return retPerm;
+    }
+
 }

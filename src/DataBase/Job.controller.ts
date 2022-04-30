@@ -72,10 +72,20 @@ export class JobController {
     }
 
     checkDate() {
-
+//    :,)
     }
 
 
+    getAllJobs(req: any, res: any, next: any){
+        let id = req.query.id;
+        _Job.find().then(Jobs => {
+            if (Jobs === null) {
+                return res.status(400).send({ message: "No Job Was Not Found" });
+            } else {
+                return res.status(200).json(Jobs);
+            }
+        })
+    }
 
 
 

@@ -16,7 +16,7 @@ const auth = new Auth();
 
 //Publikus útvonalak
 router.post("/login", userController.login);
-router.post("/register", [auth.verifyToken], userController.registration);
+router.post("/register", [], userController.registration);
 router.post("/device", [auth.verifyToken], DeviceController.addDevice);
 router.get("/device", [auth.verifyToken], DeviceController.getDeviceById);
 router.get("/devices", [auth.verifyToken], CategoryController.getAllDeviceFromUnderCategory);
@@ -29,4 +29,6 @@ router.get("/skill", [auth.verifyToken], SkillController.getSkillById);
 router.get("/skills", [auth.verifyToken], SkillController.getAllSkill);
 router.get("/skillname", [auth.verifyToken], SkillController.getSkillByName);
 router.put("/skill", [auth.verifyToken], CategoryController.putSkillsInToCategory);
+router.get("/job", [auth.verifyToken,auth.checkRole([2])], jobController.getAllJobs);
+
 export default router;

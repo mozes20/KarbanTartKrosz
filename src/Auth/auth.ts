@@ -1,3 +1,6 @@
+import { Console } from 'console';
+import { UserDbController } from './../DataBase/User.controller';
+
 var jwt = require('jsonwebtoken');
 
 export default class Auth {
@@ -12,17 +15,23 @@ export default class Auth {
     try {
       const decoded = jwt.verify(token, "anyad");
       req.user = decoded;
+
     } catch (err) {
       return res.status(401).send("Invalid Token");
     }
     return next();
   }
-
-  verifyPermission(req: any, res: any, next: any) {
+ checkRole = (permissions: Array<number>) => {
+  return async  (req: any, res: any, next: any) => {
+    const userController = new UserDbController();
+    let permission = userController.getUserRole(req.user.user_id).then((permission:any)=>{
+      if (permissions.indexOf(permission) > -1) next();
+      else res.status(401).send();
+    })
+    console.log("+++++++++++++++++"+permission);
 
     //todo megcsinálni
-    return next();
   }
-
+ }
 
 }

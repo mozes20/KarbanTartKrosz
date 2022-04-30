@@ -85,6 +85,7 @@ export class UserDbController {
         })
     }
 
+
     getUserRole(user:any):any{
         let retPerm;
         let userToFind=user;
@@ -96,4 +97,5 @@ export class UserDbController {
         })
         return retPerm;
     }
+
 }

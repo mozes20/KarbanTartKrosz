@@ -1,7 +1,9 @@
+import { JobController } from './Job.controller';
 import { Job } from './../DataModells/Job.modell';
 import { ICategory } from './../DataModells/Category.models';
 import { IMainCat } from './../DataModells/MainCategory.models';
 import { IDeviceData } from '../DataModells/Device.models';
+import * as cron from 'node-cron'
 import { Schema, model } from 'mongoose';
 var jwt = require('jsonwebtoken');
 
@@ -19,13 +21,32 @@ const _schema = new Schema<ICategory>({
     lastService: { type: Date },
     normatime: { type: Number },
     description: { type: String },
+    isJob: { type: Boolean },
     devices: [{ type: Schema.Types.ObjectId, ref: "Device" }],
     skills: [{ type: Schema.Types.ObjectId, ref: "Skills" }]
 })
 const _Maincategory = model<IMainCat>('MainCategory', _Mschema);
 const _Category = model<ICategory>('Category', _schema);
+const jobController: JobController = new JobController();
 
 export class CategoryDbController {
+    private static _instance: CategoryDbController = new CategoryDbController();
+
+    constructor() {
+        if (CategoryDbController._instance) {
+            throw new Error("Error: Instantiation failed: Use SingletonClass.getInstance() instead of new.");
+        }
+        CategoryDbController._instance = this;
+        cron.schedule('* * * * *', () => {
+            this.chekAllElements();
+            //console.log(jobList)
+        });
+
+    }
+
+    public static getInstance(): CategoryDbController {
+        return CategoryDbController._instance;
+    }
 
     async addNewMainCategory(req: any, res: any, next: any) {
         let newMainCategory = new _Maincategory();
@@ -102,13 +123,12 @@ export class CategoryDbController {
             });
     }
 
-    chekAllElements(): Job[] {
-        let jobArray: Job[] = []
+    chekAllElements() {
+
         _Category.find().then(data => {
             if (data === null) {
                 return []
             } else {
-
                 for (let element of data) {
                     let dateLas = element.lastService
                     var Difference_In_Time = new Date().getTime() - dateLas.getTime();
@@ -118,14 +138,11 @@ export class CategoryDbController {
                     if (Difference_In_Days >= element?.interval) {
                         //console.log(element)
                         let newJob: Job = { CategoryId: element.id };
-                        jobArray.push(newJob)
-
+                        jobController.addNewJobAutotmatic(newJob);
                     }
                 }
 
             }
         }).catch(e => { return [] })
-        console.log(jobArray)
-        return jobArray;
     }
 }

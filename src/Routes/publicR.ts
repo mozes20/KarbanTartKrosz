@@ -9,7 +9,7 @@ import Auth from '../Auth/Auth';
 const router = Router();
 const userController = new UserDbController();
 const DeviceController = new DeviceDbController();
-const CategoryController = new CategoryDbController();
+const CategoryController: CategoryDbController = CategoryDbController.getInstance();
 const SkillController = new SkillDbController();
 const jobController = new JobController();
 const auth = new Auth();

@@ -12,7 +12,7 @@ const _schema = new Schema<IDeviceData>({
 })
 
 const _Device = model<IDeviceData>('Device', _schema);
-const CategoryController: CategoryDbController = new CategoryDbController();
+const CategoryController: CategoryDbController = CategoryDbController.getInstance();
 export class DeviceDbController {
     addDevice(req: any, res: any, next: any) {
         let newDevice = new _Device();

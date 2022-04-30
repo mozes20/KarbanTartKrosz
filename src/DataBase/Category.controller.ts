@@ -1,3 +1,4 @@
+import { Job } from './../DataModells/Job.modell';
 import { ICategory } from './../DataModells/Category.models';
 import { IMainCat } from './../DataModells/MainCategory.models';
 import { IDeviceData } from '../DataModells/Device.models';
@@ -15,12 +16,17 @@ const _schema = new Schema<ICategory>({
 
     Name: { type: String, required: true },
     interval: { type: Number },
-    devices: [{ type: Schema.Types.ObjectId, ref: "Device" }]
+    lastService: { type: Date },
+    normatime: { type: Number },
+    description: { type: String },
+    devices: [{ type: Schema.Types.ObjectId, ref: "Device" }],
+    skills: [{ type: Schema.Types.ObjectId, ref: "Skills" }]
 })
 const _Maincategory = model<IMainCat>('MainCategory', _Mschema);
 const _Category = model<ICategory>('Category', _schema);
 
 export class CategoryDbController {
+
     async addNewMainCategory(req: any, res: any, next: any) {
         let newMainCategory = new _Maincategory();
         newMainCategory.Name = req.body.name;
@@ -77,6 +83,7 @@ export class CategoryDbController {
             }
         }).catch(e => { return res.status(400).send({ message: "unexpeted error" }) })
     }
+
     async putDeviceInToUnderCategory(DeviceId: any, categoryId: any) {
         _Category.findOneAndUpdate({ "_id": categoryId }, { $push: { "devices": DeviceId } },
             { safe: true, upsert: true, new: true }).then(data => {
@@ -84,9 +91,41 @@ export class CategoryDbController {
             }).catch(e => {
                 return 400
             });
-
     }
 
+    async putSkillsInToCategory(req: any, res: any, next: any) {
+        _Category.findOneAndUpdate({ "_id": req.body.category }, { $push: { "skills": req.body.skillid } },
+            { safe: true, upsert: true, new: true }).then(data => {
+                return res.status(201).send({ message: "Create completed" })
+            }).catch(e => {
+                return res.status(400).send({ message: "Create failed" })
+            });
+    }
 
+    chekAllElements(): Job[] {
+        let jobArray: Job[] = []
+        _Category.find().then(data => {
+            if (data === null) {
+                return []
+            } else {
 
+                for (let element of data) {
+                    let dateLas = element.lastService
+                    var Difference_In_Time = new Date().getTime() - dateLas.getTime();
+                    // To calculate the no. of days between two dates
+                    var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+                    console.log(Difference_In_Days)
+                    if (Difference_In_Days >= element?.interval) {
+                        //console.log(element)
+                        let newJob: Job = { CategoryId: element.id };
+                        jobArray.push(newJob)
+
+                    }
+                }
+
+            }
+        }).catch(e => { return [] })
+        console.log(jobArray)
+        return jobArray;
+    }
 }

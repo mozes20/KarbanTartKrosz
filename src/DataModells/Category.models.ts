@@ -5,6 +5,7 @@ export interface ICategory extends Document {
     lastService: Date;
     normatime?: number;
     description?: string;
+    isJob?: Boolean;
     devices: [{ type: Schema.Types.ObjectId, ref: "Device" }];
     skills: [{ type: Schema.Types.ObjectId, ref: "Skills" }];
 }

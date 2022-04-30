@@ -15,23 +15,15 @@ const _schema = new Schema<IJob>({
 })
 
 const _Job = model<IJob>('Job', _schema);
-let jobList: Job[] = []
 
 export class JobController {
 
-    constructor() {
-        const CategoryController = new CategoryDbController();
-        cron.schedule('* * * * *', () => {
-            jobList = CategoryController.chekAllElements();
-            //console.log(jobList)
-        });
 
-    }
 
     addNewJob(req: any, res: any, next: any) {
         let NewJob = new _Job();
         NewJob.CategoryId = req.body.CategoryId;
-        NewJob.Status = req.body.Status;
+        NewJob.Status = 0;
         NewJob.Priority = req.body.Priority;
         NewJob.ErrorDescription = req.body.ErrorDescription;
         NewJob.JobName = req.body.JobName;
@@ -43,7 +35,7 @@ export class JobController {
         });
     }
 
-    addNewJobAutotmatic(jobObject: IJob) {
+    addNewJobAutotmatic(jobObject: Job) {
         let NewJob = new _Job();
         NewJob.CategoryId = jobObject.CategoryId;
         NewJob.Status = jobObject.Status;

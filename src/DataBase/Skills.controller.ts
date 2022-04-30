@@ -12,7 +12,7 @@ const _schema = new Schema<ISkills>({
 })
 
 const _Skills = model<ISkills>('Skills', _schema);
-const CategoryController: CategoryDbController = new CategoryDbController();
+const CategoryController: CategoryDbController = CategoryDbController.getInstance();
 export class SkillDbController {
     addSkill(req: any, res: any, next: any) {
         let newSkill = new _Skills();

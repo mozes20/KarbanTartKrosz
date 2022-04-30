@@ -89,13 +89,11 @@ export class UserDbController {
         let retPerm;
         let userToFind=user;
         retPerm = _User.findOne({ _id: userToFind }).then(users => {
-            console.log(users);
             if (users===null) {
                 return 0;
             }
             return users.Permission;
         })
-        console.log(retPerm);
         return retPerm;
     }
 }

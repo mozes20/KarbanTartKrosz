@@ -29,6 +29,6 @@ router.get("/skill", [auth.verifyToken], SkillController.getSkillById);
 router.get("/skills", [auth.verifyToken], SkillController.getAllSkill);
 router.get("/skillname", [auth.verifyToken], SkillController.getSkillByName);
 router.put("/skill", [auth.verifyToken], CategoryController.putSkillsInToCategory);
-router.get("/job", [auth.verifyToken,auth.checkRole([2])], jobController.getAllJobs);
+router.get("/job", [auth.verifyToken,auth.checkRole([1,2])], jobController.getAllJobs);
 
 export default router;

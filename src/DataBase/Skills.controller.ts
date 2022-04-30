@@ -1,5 +1,5 @@
 import { CategoryDbController } from './Category.controller';
-import {ISkills} from './../DataModells/Skills.models';
+import { ISkills } from './../DataModells/Skills.models';
 import { Schema, model } from 'mongoose';
 var jwt = require('jsonwebtoken');
 
@@ -22,22 +22,22 @@ export class SkillDbController {
 
         newSkill.save().then(Skill => {
             return res.status(201).send({ message: "Create completed" });
-         }).catch(err => {
-                console.log(err)
-                return res.status(400).send({ message: "Create failed" });
-         })
-            
-        
-
-        //Mózes izéje, black magic ?????
-       /* newSkill.save().then(Skill => {
-            CategoryController.putDeviceInToUnderCategory(Skill._id, req.body.category)
-            return res.status(201).send({ message: "Create completed" })
         }).catch(err => {
             console.log(err)
-            return res.status(400).send({ message: "Create failed" })
-        });
-        */
+            return res.status(400).send({ message: "Create failed" });
+        })
+
+
+
+        //Mózes izéje, black magic ?????
+        /* newSkill.save().then(Skill => {
+             CategoryController.putDeviceInToUnderCategory(Skill._id, req.body.category)
+             return res.status(201).send({ message: "Create completed" })
+         }).catch(err => {
+             console.log(err)
+             return res.status(400).send({ message: "Create failed" })
+         });
+         */
     }
 
     getSkillById(req: any, res: any, next: any) {
@@ -51,14 +51,25 @@ export class SkillDbController {
         })
     }
 
-    getSkillByName(req: any, res: any, next: any){
-        let name = req.query.name;
-        _Skills.findOne(name).then(Skill =>{
+    getAllSkill(req: any, res: any, next: any) {
+        let id = req.query.id;
+        _Skills.find().then(Skill => {
             if (Skill === null) {
                 return res.status(400).send({ message: "Skill Was Not Found" });
             } else {
                 return res.status(200).json(Skill);
-            } 
+            }
+        })
+    }
+
+    getSkillByName(req: any, res: any, next: any) {
+        let name = req.query.name;
+        _Skills.findOne(name).then(Skill => {
+            if (Skill === null) {
+                return res.status(400).send({ message: "Skill Was Not Found" });
+            } else {
+                return res.status(200).json(Skill);
+            }
         })
     }
 

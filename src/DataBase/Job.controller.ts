@@ -52,7 +52,7 @@ export class JobController {
         });
     }
 
-    addNewJobToDevice(req: any, res: any, next: any){
+    addNewJobToDevice(req: any, res: any, next: any) {
         let NewJob = new _Job();
         NewJob.DeviceId = req.body.deviceid;
         NewJob.ErrorDate = new Date();
@@ -88,7 +88,7 @@ export class JobController {
 
     getAllJobs(req: any, res: any, next: any) {
         let id = req.query.id;
-        _Job.find().then(Jobs => {
+        _Job.find().populate({ path: 'CategoryId' }).populate({ path: 'DeviceId', populate: { path: 'Category' } }).then(Jobs => {
             if (Jobs === null) {
                 return res.status(400).send({ message: "No Job Was Not Found" });
             } else {
@@ -127,6 +127,11 @@ export class JobController {
         });
         
     }
+
+    async getJobsToUser(req: any, res: any, next: any) {
+
+    }
+
 
 
 

@@ -7,7 +7,7 @@ const _schema = new Schema<IDeviceData>({
 
     Name: { type: String, required: true },
     Location: { type: String, required: true },
-    Category: { type: Schema.Types.ObjectId, required: true }
+    Category: { type: Schema.Types.ObjectId, required: true,  ref: "Category" }
 
 })
 

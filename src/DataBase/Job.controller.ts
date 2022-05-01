@@ -8,8 +8,9 @@ import mongoose from 'mongoose';
 const _schema = new Schema<IJob>({
 
     CategoryId: { type: Schema.Types.ObjectId, ref: "Category" },
-    DeviceId: { type: Schema.Types.ObjectId, ref: "Device" },
-    ErrorDate: { type: Date },
+    DeviceId: { type: Schema.Types.ObjectId, ref:"Device"},
+    UserId: { type: Schema.Types.ObjectId, ref:"User"},
+    ErrorDate: { type: Date},
     Status: { type: Number },
     Priority: { type: Number },
     ErrorDescription: { type: String },
@@ -54,7 +55,7 @@ export class JobController {
     addNewJobToDevice(req: any, res: any, next: any) {
         let NewJob = new _Job();
         NewJob.DeviceId = req.body.deviceid;
-        NewJob.ErrorDate = req.body.date;
+        NewJob.ErrorDate = new Date();
         NewJob.Status = 0;
         NewJob.Priority = req.body.Priority;
         NewJob.ErrorDescription = req.body.ErrorDescription;
@@ -115,6 +116,16 @@ export class JobController {
             _Job.updateOne({ _id: req.body.jobId }, { Status: -1 })
             return res.status(200).send({ message: "Job Was cancled" });
         })
+    }
+    
+    async addUserToJob(req: any, res: any, next: any){
+        _Job.findOneAndUpdate({"_id": req.body.jobId},{"UserId":req.user.user_id},
+        { safe: true, upsert: true, new: true }).then(data => {
+            return res.status(201).send({ message: "Create completed" })
+        }).catch(e => {
+            return res.status(400).send({ message: "Create failed" })
+        });
+        
     }
 
     async getJobsToUser(req: any, res: any, next: any) {

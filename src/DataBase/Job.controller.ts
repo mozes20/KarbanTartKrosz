@@ -40,7 +40,7 @@ export class JobController {
     addNewJobAutotmatic(jobObject: Job) {
         let NewJob = new _Job();
         NewJob.CategoryId = jobObject.CategoryId;
-        NewJob.Status = jobObject.Status;
+        NewJob.Status = 0;
         NewJob.Priority = jobObject.Priority;
         NewJob.ErrorDescription = jobObject.ErrorDescription;
         NewJob.JobName = jobObject.JobName;
@@ -81,11 +81,11 @@ export class JobController {
     }
 
     checkDate() {
-//    :,)
+        //    :,)
     }
 
 
-    getAllJobs(req: any, res: any, next: any){
+    getAllJobs(req: any, res: any, next: any) {
         let id = req.query.id;
         _Job.find().then(Jobs => {
             if (Jobs === null) {
@@ -95,6 +95,28 @@ export class JobController {
             }
         })
     }
+
+    //státusz rendszer csak növeltetjük és hogyha elutasítva akkor -1=elutasítva 0= pending 1= elfogadva 2=Megkezdve 3= Kész
+    async setStatus(req: any, res: any, next: any) {
+        _Job.findOne({ _id: req.body.jobId }).then(job => {
+            if (job === null) {
+                return res.status(400).send({ message: "Job Was Not Found" });
+            }
+            _Job.updateOne({ _id: req.body.jobId }, { Status: job.Status + 1 })
+            return res.status(200).send({ message: "Job Was edited" });
+        })
+    }
+
+    async cancelJob(req: any, res: any, next: any) {
+        _Job.findOne({ _id: req.body.jobId }).then(job => {
+            if (job === null) {
+                return res.status(400).send({ message: "Job Was Not Found" });
+            }
+            _Job.updateOne({ _id: req.body.jobId }, { Status: -1 })
+            return res.status(200).send({ message: "Job Was cancled" });
+        })
+    }
+
 
 
 

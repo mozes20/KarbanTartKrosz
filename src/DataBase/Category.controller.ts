@@ -18,10 +18,10 @@ const _schema = new Schema<ICategory>({
 
     Name: { type: String, required: true },
     interval: { type: Number },
-    lastService: { type: Date },
+    lastService: { type: Date, default: new Date() },
     normatime: { type: Number },
     description: { type: String },
-    isJob: { type: Boolean },
+    isJob: { type: Boolean, default: false },
     devices: [{ type: Schema.Types.ObjectId, ref: "Device" }],
     skills: [{ type: Schema.Types.ObjectId, ref: "Skills" }]
 })
@@ -133,7 +133,6 @@ export class CategoryDbController {
     }
 
     chekAllElements() {
-
         _Category.find().then(data => {
             if (data === null) {
                 return []
@@ -144,10 +143,13 @@ export class CategoryDbController {
                     // To calculate the no. of days between two dates
                     var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
                     console.log(Difference_In_Days)
-                    if (Difference_In_Days >= element?.interval) {
+                    if (Difference_In_Days >= element?.interval && !element?.isJob) {
                         //console.log(element)
-                        let newJob: Job = { CategoryId: element.id };
+                        let newJob: Job = { CategoryId: element.id, Status: 0 };
                         jobController.addNewJobAutotmatic(newJob);
+                        _Category.findOneAndUpdate({ "_id": element.id }, { isJob: true }).then((adat) => {
+                            console.log("friisítve")
+                        })
                     }
                 }
 

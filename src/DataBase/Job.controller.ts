@@ -9,6 +9,7 @@ const _schema = new Schema<IJob>({
 
     CategoryId: { type: Schema.Types.ObjectId, ref: "Category" },
     DeviceId: { type: Schema.Types.ObjectId, ref:"Device"},
+    ErrorDate: { type: Date},
     Status: { type: Number },
     Priority: { type: Number },
     ErrorDescription: { type: String },
@@ -17,8 +18,6 @@ const _schema = new Schema<IJob>({
 })
 
 const _Job = model<IJob>('Job', _schema);
-const CategoryController: CategoryDbController = CategoryDbController.getInstance();
-const DeviceController = new DeviceDbController();
 
 export class JobController {
 
@@ -54,7 +53,8 @@ export class JobController {
 
     addNewJobToDevice(req: any, res: any, next: any){
         let NewJob = new _Job();
-        NewJob.DeviceId=req.body.deviceid;
+        NewJob.DeviceId = req.body.deviceid;
+        NewJob.ErrorDate = req.body.date;
         NewJob.Status = 0;
         NewJob.Priority = req.body.Priority;
         NewJob.ErrorDescription = req.body.ErrorDescription;

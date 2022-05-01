@@ -24,11 +24,13 @@ router.get("/maincategory", [auth.verifyToken], CategoryController.getMainCatego
 router.post("/maincategory", [auth.verifyToken], CategoryController.addNewMainCategory);
 router.post("/category", [auth.verifyToken], CategoryController.addUnderCategory);
 router.get("/category", [auth.verifyToken], CategoryController.getUndercategory);
-router.post("/skill", [auth.verifyToken], SkillController.addSkill);
+router.post("/skill", [], SkillController.addSkill);
 router.get("/skill", [auth.verifyToken], SkillController.getSkillById);
 router.get("/skills", [auth.verifyToken], SkillController.getAllSkill);
 router.get("/skillname", [auth.verifyToken], SkillController.getSkillByName);
-router.put("/skill", [auth.verifyToken], CategoryController.putSkillsInToCategory);
+router.put("/skillcategory", [auth.verifyToken], CategoryController.putSkillsInToCategory);
+router.put("/skilluser", [], userController.putSkillsInToUser);
+router.put("/updatecategory", [], CategoryController.updateNormAndInterval);
 router.get("/job", [auth.verifyToken,auth.checkRole([1,2])], jobController.getAllJobs);
 
 export default router;

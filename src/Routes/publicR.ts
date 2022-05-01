@@ -28,7 +28,7 @@ router.post("/skill", [], SkillController.addSkill);
 router.get("/skill", [auth.verifyToken], SkillController.getSkillById);
 router.get("/skills", [auth.verifyToken], SkillController.getAllSkill);
 router.get("/skillname", [auth.verifyToken], SkillController.getSkillByName);
-router.put("/skillcategory", [auth.verifyToken], CategoryController.putSkillsInToCategory);
+router.put("/skillcategory", [], CategoryController.putSkillsInToCategory);
 router.put("/skilluser", [], userController.putSkillsInToUser);
 router.put("/updatecategory", [], CategoryController.updateNormAndInterval);
 router.get("/job", [auth.verifyToken,auth.checkRole([1,2])], jobController.getAllJobs);

@@ -1,4 +1,5 @@
 import { CategoryDbController } from './Category.controller';
+import { DeviceDbController } from './../DataBase/Device.controller';
 import { IJob, Job } from './../DataModells/Job.modell';
 import { Schema, model } from 'mongoose';
 import * as cron from 'node-cron'
@@ -6,7 +7,8 @@ import mongoose from 'mongoose';
 
 const _schema = new Schema<IJob>({
 
-    CategoryId: { type: Schema.Types.ObjectId, required: true, ref: "Category" },
+    CategoryId: { type: Schema.Types.ObjectId, ref: "Category" },
+    DeviceId: { type: Schema.Types.ObjectId, ref:"Device"},
     Status: { type: Number },
     Priority: { type: Number },
     ErrorDescription: { type: String },
@@ -15,10 +17,10 @@ const _schema = new Schema<IJob>({
 })
 
 const _Job = model<IJob>('Job', _schema);
+const CategoryController: CategoryDbController = CategoryDbController.getInstance();
+const DeviceController = new DeviceDbController();
 
 export class JobController {
-
-
 
     addNewJob(req: any, res: any, next: any) {
         let NewJob = new _Job();
@@ -47,6 +49,21 @@ export class JobController {
         }).catch(err => {
             console.log(err)
             return 400
+        });
+    }
+
+    addNewJobToDevice(req: any, res: any, next: any){
+        let NewJob = new _Job();
+        NewJob.DeviceId=req.body.deviceid;
+        NewJob.Status = 0;
+        NewJob.Priority = req.body.Priority;
+        NewJob.ErrorDescription = req.body.ErrorDescription;
+        NewJob.JobName = req.body.JobName;
+        NewJob.save().then(() => {
+            return res.status(201).send({ message: "Create completed" })
+        }).catch(err => {
+            console.log(err)
+            return res.status(400).send({ message: "Create failed" })
         });
     }
 

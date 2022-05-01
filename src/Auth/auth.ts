@@ -28,7 +28,6 @@ export default class Auth {
       if (permissions.indexOf(permission) > -1) next();
       else res.status(401).send();
     })
-    console.log("+++++++++++++++++"+permission);
 
     //todo megcsinálni
   }

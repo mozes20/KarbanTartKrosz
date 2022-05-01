@@ -38,7 +38,7 @@ export class CategoryDbController {
         }
         CategoryDbController._instance = this;
         cron.schedule('* * * * *', () => {
-            this.chekAllElements();
+            //this.chekAllElements();
             //console.log(jobList)
         });
 
@@ -116,6 +116,15 @@ export class CategoryDbController {
 
     async putSkillsInToCategory(req: any, res: any, next: any) {
         _Category.findOneAndUpdate({ "_id": req.body.category }, { $push: { "skills": req.body.skillid } },
+            { safe: true, upsert: true, new: true }).then(data => {
+                return res.status(201).send({ message: "Create completed" })
+            }).catch(e => {
+                return res.status(400).send({ message: "Create failed" })
+            });
+    }
+
+    async updateNormAndInterval(req: any, res: any, next: any) {
+        _Category.findOneAndUpdate({ "_id": req.body.category }, { "interval": req.body?.interval, "normatime":req.body?.normatime },
             { safe: true, upsert: true, new: true }).then(data => {
                 return res.status(201).send({ message: "Create completed" })
             }).catch(e => {

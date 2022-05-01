@@ -85,7 +85,6 @@ export class UserDbController {
         })
     }
 
-
     getUserRole(user:any):any{
         let retPerm;
         let userToFind=user;
@@ -96,6 +95,15 @@ export class UserDbController {
             return users.Permission;
         })
         return retPerm;
+    }
+
+    async putSkillsInToUser(req: any, res: any, next: any) {
+        _User.findOneAndUpdate({ "_id": req.body.user }, { $push: { "Skills": req.body.skillid } },
+            { safe: true, upsert: true, new: true }).then(data => {
+                return res.status(201).send({ message: "Create completed" })
+            }).catch(e => {
+                return res.status(400).send({ message: "Create failed" })
+            });
     }
 
 }

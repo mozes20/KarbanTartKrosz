@@ -8,8 +8,8 @@ import mongoose from 'mongoose';
 const _schema = new Schema<IJob>({
 
     CategoryId: { type: Schema.Types.ObjectId, ref: "Category" },
-    DeviceId: { type: Schema.Types.ObjectId, ref:"Device"},
-    ErrorDate: { type: Date},
+    DeviceId: { type: Schema.Types.ObjectId, ref: "Device" },
+    ErrorDate: { type: Date },
     Status: { type: Number },
     Priority: { type: Number },
     ErrorDescription: { type: String },
@@ -51,7 +51,7 @@ export class JobController {
         });
     }
 
-    addNewJobToDevice(req: any, res: any, next: any){
+    addNewJobToDevice(req: any, res: any, next: any) {
         let NewJob = new _Job();
         NewJob.DeviceId = req.body.deviceid;
         NewJob.ErrorDate = req.body.date;
@@ -87,7 +87,7 @@ export class JobController {
 
     getAllJobs(req: any, res: any, next: any) {
         let id = req.query.id;
-        _Job.find().then(Jobs => {
+        _Job.find().populate({ path: 'CategoryId' }).populate({ path: 'DeviceId', populate: { path: 'Category' } }).then(Jobs => {
             if (Jobs === null) {
                 return res.status(400).send({ message: "No Job Was Not Found" });
             } else {
@@ -116,6 +116,11 @@ export class JobController {
             return res.status(200).send({ message: "Job Was cancled" });
         })
     }
+
+    async getJobsToUser(req: any, res: any, next: any) {
+
+    }
+
 
 
 

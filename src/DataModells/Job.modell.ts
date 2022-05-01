@@ -3,7 +3,7 @@ import { Schema, Document } from 'mongoose';
 
 export interface IJob extends Document {
     CategoryId: { type: Schema.Types.ObjectId };
-    Status?: number;
+    Status: number;
     Priority?: number;
     ErrorDescription?: String;
     JobName?: String;
@@ -11,7 +11,7 @@ export interface IJob extends Document {
 
 export interface Job {
     CategoryId: { type: Schema.Types.ObjectId };
-    Status?: number;
+    Status: number;
     Priority?: number;
     ErrorDescription?: String;
     JobName?: String;

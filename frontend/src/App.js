@@ -7,9 +7,10 @@ import Login from './components/Login/Login';
 import Layout from './components/Layout';
 import HomePage from './components/HomePage';
 import RequireAuth from './components/RequireAuth';
-import { Admin } from './components/Admin';
 import Dropdown from './components/Dropdown';
-
+import { Admin } from './components/Admin';
+import  Maintenance  from './components/Maintenance';
+import Employees from './components/Employees';
 
 const App = () => (
 
@@ -21,10 +22,13 @@ const App = () => (
       <Route path="/" element={<Layout />}>
         <Route path='login' element={<Login />} />
         <Route path='home' element={<HomePage />} />
-        
+        <Route path='maintenance' element={<Maintenance />} />
+        <Route path='employees' element={<Employees />} />
         <Route element={<RequireAuth />}>
+          <Route path='admin' element={<Admin />} />
           <Route path="admintable" element={<AdminTable />} />
           <Route path='categories' element={<Dropdown />} />
+
         </Route>
       </Route>
     </Routes>

@@ -11,6 +11,8 @@ import SendIcon from '@mui/icons-material/Send';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
+import Dropdown from './Dropdown';
+import { Time } from './Time';
 
 export const Admin = () => {
 	const [open, setOpen] = React.useState(true);
@@ -24,31 +26,17 @@ export const Admin = () => {
 
 	return (
 		<div>
-			<List
-				sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-				component="nav"
-				aria-labelledby="nested-list-subheader"
-				subheader={
-					<ListSubheader component="div" id="nested-list-subheader">
-						Categories
-					</ListSubheader>
-				}
-			>
-				<ListItemButton onClick={handleClick}>
-					<ListItemIcon>
-						<InboxIcon />
-					</ListItemIcon>
-					<ListItemText primary="Kéziszerszámok" />
-					{open ? <ExpandLess /> : <ExpandMore />}
-				</ListItemButton>
-				<Collapse in={open} timeout="auto" unmountOnExit>
-					<List component="div" disablePadding>
-						<ListItemButton sx={{ pl: 9 }} onClick={handleClick2}>
-							<ListItemText primary="Fúrók" />
-						</ListItemButton>
-					</List>
-				</Collapse>
-			</List>
+			<div>
+				<div>
+					<Dropdown />
+				</div>
+				<div>
+					
+				</div>
+			</div>
+			<div>
+
+			</div>
 		</div>
 
 	);

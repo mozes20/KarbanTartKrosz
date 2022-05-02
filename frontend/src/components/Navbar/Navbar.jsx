@@ -1,15 +1,18 @@
 import React from 'react'
 import { useState } from 'react'
-import { Outlet, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import './Navbar.css'
 
 function Navbar() {
   let Links = [
-    { name: "HOME", link: "/home" },
     { name: "TABLE", link: "/admintable" },
-    { name: "ADMIN", link: "/categories" },
+    { name: "EMPLOYEES", link: "/Employees" },
+    { name: "MAINTENANCE", link: "/Maintenance" },
+    { name: "ADMIN", link: "/admin" },
+    { name: "CATEGORIES", link: "/categories" },
     { name: "LOGIN", link: "/login" },
+
   ];
   let [open, setOpen] = useState(false);
 
@@ -36,12 +39,13 @@ function Navbar() {
                 <Link to={link.link} className='text-gray-800 hover:text-gray-400 duration-300' >{link.name}</Link>
               </li>
             ))
+
           }
         </ul>
-
       </div>
+
     </div>
-    
+
   )
 }
 

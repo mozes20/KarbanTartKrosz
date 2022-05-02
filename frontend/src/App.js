@@ -24,10 +24,11 @@ const App = () => (
         <Route path='home' element={<HomePage />} />
         <Route path='maintenance' element={<Maintenance />} />
         <Route path='employees' element={<Employees />} />
+        <Route path='categories' element={<Dropdown />} />
         <Route element={<RequireAuth />}>
           <Route path='admin' element={<Admin />} />
           <Route path="admintable" element={<AdminTable />} />
-          <Route path='categories' element={<Dropdown />} />
+          
 
         </Route>
       </Route>

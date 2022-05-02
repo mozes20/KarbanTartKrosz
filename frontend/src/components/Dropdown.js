@@ -15,6 +15,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import StarBorder from '@mui/icons-material/StarBorder';
 import Button from '@mui/material/Button';
 import { Time } from './Time';
+import AddSkill from './AddSkill';
 
 
 const Dropdown = () => {
@@ -101,10 +102,13 @@ const Dropdown = () => {
 	return (
 		<div >
 			<div className=' mt-10 justify-center flex'>
-			<div className='flex mr-20'>
+				<div className='flex mr-10'>
+				<AddSkill/>
+				</div>
+			<div className='flex mr-10'>
 					<Time />
 				</div>
-				<div className='flex mr-20'>
+				<div className='flex mr-10'>
 					<Skills />
 				</div>
 					<List

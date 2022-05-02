@@ -11,13 +11,16 @@ export const Time = () => {
 
 	const [mainCategories, setMainCategories] = React.useState([]);
 	const [category, setCategory] = React.useState('');
+	const [categoryID, setCategoryID] = React.useState('');
 	const [interval, setInterval] = React.useState('');
 	const timeInterval = [
 		1,2,3,4,5,6,7,8,9,10
 	]
+	const [normaTime, setNormaTime] = React.useState('');
+	const [description, setDescription] = React.useState('');
 
 	React.useEffect(() => {
-		const URL = '/maincategory';
+		const URL = '/categories';
 		axios.get(URL, {
 			params:
 			{
@@ -31,11 +34,26 @@ export const Time = () => {
 	}, [])
 	const handleChange = (event) => {
 		setCategory(event.target.value);
+		console.log(mainCategories)
+	};
+	const putTime = () => {
+		console.log('category: ' + category)
+		axios.put('/updatecategory', {
+			"category": category,
+			"interval": interval,
+			"normatime": normaTime,
+			"description": description,
+			token: localStorage.getItem('token')
+		})
+		.then((response) => {
+			console.log(response?.data)
+		})
 	};
 
 	return (
 		<div>
 			<div className='flex justify-center'>
+				
 				<Card sx={{ minWidth: 120 }} className='bg-white p-2'>
 					<div>
 						<div className='mb-4'>
@@ -49,11 +67,11 @@ export const Time = () => {
 									id="demo-simple-select"
 									value={category}
 									label="Category"
-									onChange={handleChange}
+									onChange={(e) => setCategory(e.target.value)}
 								>
 									{
 										mainCategories?.map((mc) => (
-											<MenuItem value={mc.Name}>{mc.Name}</MenuItem>
+											<MenuItem value={mc._id}>{mc.Name}</MenuItem>
 										))
 									}
 								</Select>
@@ -66,7 +84,7 @@ export const Time = () => {
 									id="demo-simple-select"
 									value={interval}
 									label="Time Interval"
-									onChange={handleChange}
+									onChange={(e) => setInterval(e.target.value)}
 								>
 									{
 										timeInterval?.map((ti) => (
@@ -77,12 +95,23 @@ export const Time = () => {
 							</FormControl>
 						</div>
 						<div className='mt-4'>
-							<TextField label="Required Time" color='grey' focused />
+							<TextField label="Normatime" color='grey' focused 
+							value={normaTime}
+							onChange={(e) => setNormaTime(e.target.value)}
+							/>
 						</div>
 						<div className='mt-4'>
-							<TextField label="Instructions" color='grey' focused />
+							<TextField label="Description" color='grey' focused 
+							value={description}
+							onChange={(e) => setDescription(e.target.value)}
+							/>
 						</div>
-
+						<div className='flex justify-end my-2'>
+								<button className="bg-gray-500 hover:bg-gray-700 text-white text-sm 
+								font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={putTime} >
+									ADD
+								</button>
+							</div>
 					</div>
 				</Card>
 			</div>

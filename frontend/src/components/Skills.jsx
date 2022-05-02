@@ -13,9 +13,24 @@ const Skills = () => {
 	const [data, setData] = React.useState([]);
 	const [ids, setIds] = React.useState([]);
 	const [names, setNames] = React.useState([]);
+	const [skills, setSkills] = React.useState([]);
+	const [skill, setSkill] = React.useState('');
 	const [canLoad, setCanLoad] = React.useState(false)
 	const [loaded, setLoaded] = React.useState(0)
 
+	React.useEffect(() => {
+		const URL = '/skills';
+		axios.get(URL, {
+			params:
+			{
+				token: localStorage.getItem('token')
+			}
+		})
+			.then((response) => {
+				setSkills(response?.data)
+				console.log("skills " + response?.data[0]?.Name)
+			})
+	}, [])
 
 	React.useEffect(async () => {
 		console.log("useeffect -0")
@@ -56,7 +71,7 @@ const Skills = () => {
 		})
 
 		console.log(canLoad) 
-		 names.map((names)=>(console.log("name: " + names)))
+		 /* names.map((names)=>(console.log("name: " + names))) */
 	}, [])
 
 
@@ -143,9 +158,22 @@ const Skills = () => {
 								</Select>
 							</FormControl>
 						</div>
-						<div className='mt-4'>
-							<TextField label="Skill" color='grey' focused />
-						</div>
+						<div className='mt-4 w-60'>
+								<FormControl fullWidth >
+									<InputLabel id="demo-simple-select-label">Skill</InputLabel>
+									<Select
+										label="Skills"
+										value={skill}
+										onChange={(e) => setSkill(e.target.value)}
+									>
+										{
+										skills.map((name) => (
+											<MenuItem key={name._id} value={name._id}>{name.Name}</MenuItem>
+										))
+									}
+									</Select>
+								</FormControl>
+							</div>
 						<div className='flex justify-end my-2'>
 							<button className="bg-gray-500 hover:bg-gray-700 text-white text-sm font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" >
 								ATTACH SKILL

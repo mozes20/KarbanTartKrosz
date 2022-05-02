@@ -13,11 +13,15 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopTimePicker } from '@mui/x-date-pickers/DesktopTimePicker';
 import Stack from '@mui/material/Stack';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import axios from '../api/axios';
 
 const columns = [
 	{ id: 'id', label: 'ID', minWidth: 100 },
 	{ id: 'device', label: 'Device', minWidth: 170 },
-	{ id: 'details', label: 'Details', minWidth: 170 },
 	{ id: 'details', label: 'Details', minWidth: 170 },
 	{ id: 'status', label: 'Status', minWidth: 100 },
 	{ id: 'time', label: 'Time', minWidth: 170 },
@@ -33,11 +37,61 @@ const rows = [
 	createData('3', 'Teszt3', 'Karbantartó', 'OK'),
 ];
 
+
 const Maintenance = () => {
+	const [devices, setDevices] = React.useState([]);
+	const [device, setDevice] = React.useState('');
+
 	const [value, setValue] = React.useState(new Date());
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
+	const [categories, setCategories] = React.useState([]);
+	const [category, setCategory] = React.useState('');
 
+	React.useEffect(() => {
+		const URL = '/categories';
+		axios.get(URL, {
+			params:
+			{
+				token: localStorage.getItem('token')
+			}
+		})
+			.then((response) => {
+				setCategories(response?.data)
+				console.log(response?.data)
+			})
+	}, [])
+
+	React.useEffect(() => {
+		const URL = '/alldevic';
+		axios.get(URL, {
+			params:
+			{
+				token: localStorage.getItem('token')
+			}
+		})
+			.then((response) => {
+				setDevices(response?.data)
+				console.log(response?.data)
+			})
+	}, [])
+	const HandleChangeCategory = (event) => {
+		setCategory(event.target.value)
+		console.log("category: " + category)
+
+		axios.get('/alldevic', {
+			params:
+			{
+				/* "category": category, */
+				token: localStorage.getItem('token')
+			}
+		})
+			.then((response) => {
+				setDevices(response?.data)
+				console.log('setf: ' + devices[0].Name)
+				console.log("devices: " + response?.data[0].Name)
+			})
+	}
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
 	};
@@ -46,20 +100,46 @@ const Maintenance = () => {
 		setRowsPerPage(+event.target.value);
 		setPage(0);
 	};
-	const handleChange = (event) => {
-
-	};
 	return (
 		<div>
 			<div className=' mt-10 justify-center flex '>
 				<div className='flex mr-20'>
-					<Card className='bg-white p-2 max-h-80'>
+					<Card className='bg-white p-2 max-h-100'>
 						<div>
 							<div className='mb-4'>
 								<label htmlFor="addskill" className=' text-gray-700 text-sm font-bold mx-2 mb-10'>	Register Malfunction </label>
 							</div>
+							{/* <div className='mt-4'>
+							<FormControl fullWidth >
+								<InputLabel id="demo-simple-select-label mt-10">Category</InputLabel>
+								<Select
+									value={category}
+									label="categories"
+									onChange={HandleChangeCategory}
+								>
+									{
+										categories?.map((mc) => (
+											<MenuItem key={mc._id} value={mc._id}>{mc.Name}</MenuItem>
+										))
+									}
+								</Select>
+							</FormControl>
+							</div> */}
 							<div className='mt-4'>
-								<TextField label="Device" color='grey' focused />
+							<FormControl fullWidth >
+								<InputLabel >Device</InputLabel>
+								<Select
+									value={device}
+									label="devices"
+									onChange={(e) => setDevice(e.target.value)}
+								>
+									{
+										devices?.map((d) => (
+											<MenuItem key={d._id} value={d._id}>{d.Name}</MenuItem>
+										))
+									}
+								</Select>
+							</FormControl>
 							</div>
 							<div className='mt-4'>
 								<TextField label="Details" color='grey' focused />
@@ -92,6 +172,7 @@ const Maintenance = () => {
 						<TableContainer sx={{ maxHeight: 440 }}>
 							<Table stickyHeader aria-label="sticky table">
 								<TableHead>
+									<header className='font-bold ml-4'>feladatok</header>
 									<TableRow>
 										{columns.map((column) => (
 											<TableCell

@@ -71,7 +71,7 @@ export const Time = () => {
 								>
 									{
 										mainCategories?.map((mc) => (
-											<MenuItem value={mc._id}>{mc.Name}</MenuItem>
+											<MenuItem key={mc._id} value={mc._id}>{mc.Name}</MenuItem>
 										))
 									}
 								</Select>
@@ -88,7 +88,7 @@ export const Time = () => {
 								>
 									{
 										timeInterval?.map((ti) => (
-											<MenuItem value={ti}>{ti + " hét"}</MenuItem>
+											<MenuItem key={ti} value={ti}>{ti + " hét"}</MenuItem>
 										))
 									}
 								</Select>

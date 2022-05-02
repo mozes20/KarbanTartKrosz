@@ -18,6 +18,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import axios from '../api/axios';
+import { Description } from '@mui/icons-material';
 
 const columns = [
 	{ id: 'id', label: 'ID', minWidth: 100 },
@@ -41,12 +42,30 @@ const rows = [
 const Maintenance = () => {
 	const [devices, setDevices] = React.useState([]);
 	const [device, setDevice] = React.useState('');
+	const [description, setDescription] = React.useState('');
 
 	const [value, setValue] = React.useState(new Date());
 	const [page, setPage] = React.useState(0);
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 	const [categories, setCategories] = React.useState([]);
 	const [category, setCategory] = React.useState('');
+	const [jobName, setJobName] = React.useState('');
+	const [jobs, setJobs] = React.useState([]);
+
+	React.useEffect(() => {
+		const URL = '/job';
+		axios.get(URL, {
+			params:
+			{
+				token: localStorage.getItem('token')
+			}
+		})
+			.then((response) => {
+				setCategories(response?.data)
+				console.log("jobs: " + response.data)
+			})
+	}, [])
+
 
 	React.useEffect(() => {
 		const URL = '/categories';
@@ -75,6 +94,18 @@ const Maintenance = () => {
 				console.log(response?.data)
 			})
 	}, [])
+	const registerJob = () => {
+		axios.post('/emergencyjob',{
+			"deviceid": device,
+			"ErrorDescription": description,
+			"JobName  ": jobName,
+			token: localStorage.getItem('token')
+		})
+		.then((response) => {
+			console.log(response)
+		})
+	}
+
 	const HandleChangeCategory = (event) => {
 		setCategory(event.target.value)
 		console.log("category: " + category)
@@ -107,7 +138,7 @@ const Maintenance = () => {
 					<Card className='bg-white p-2 max-h-100'>
 						<div>
 							<div className='mb-4'>
-								<label htmlFor="addskill" className=' text-gray-700 text-sm font-bold mx-2 mb-10'>	Register Malfunction </label>
+								<label htmlFor="addskill" className=' text-gray-700 text-sm font-bold mx-2 mb-10'>	Register Job </label>
 							</div>
 							{/* <div className='mt-4'>
 							<FormControl fullWidth >
@@ -142,7 +173,16 @@ const Maintenance = () => {
 							</FormControl>
 							</div>
 							<div className='mt-4'>
-								<TextField label="Details" color='grey' focused />
+								<TextField label="Details" color='grey' focused 
+									value={description}
+									onChange={(e) => setDescription(e.target.value)}
+								/>
+							</div>
+							<div className='mt-4'>
+								<TextField label="Job name" color='grey' focused 
+									value={jobName}
+									onChange={(e) => setJobName(e.target.value)}
+								/>
 							</div>
 							<div className='mt-4'>
 								<LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -159,8 +199,10 @@ const Maintenance = () => {
 								</LocalizationProvider>
 							</div>
 							<div className='flex justify-end my-2'>
-								<button className="bg-gray-500 hover:bg-gray-700 text-white text-sm font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" >
-									REGISTER
+								<button className="bg-gray-500 hover:bg-gray-700 text-white text-sm font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+									onClick={registerJob}
+								>
+									REGISTER JOB
 								</button>
 							</div>
 						</div>
@@ -172,7 +214,7 @@ const Maintenance = () => {
 						<TableContainer sx={{ maxHeight: 440 }}>
 							<Table stickyHeader aria-label="sticky table">
 								<TableHead>
-									<header className='font-bold ml-4'>feladatok</header>
+									<header className='font-bold ml-4'>Jobs</header>
 									<TableRow>
 										{columns.map((column) => (
 											<TableCell

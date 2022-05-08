@@ -104,6 +104,15 @@ export class CategoryDbController {
             }
         }).catch(e => { return res.status(400).send({ message: "unexpeted error" }) })
     }
+    async getAllCategory(req: any, res: any, next: any) {
+        _Category.find().then(data => {
+            if (data === null) {
+                return res.status(400).send({ message: "Categorys not found" })
+            } else {
+                return res.status(200).json(data);
+            }
+        }).catch(e => { return res.status(400).send({ message: "unexpeted error" }) })
+    }
 
     async putDeviceInToUnderCategory(DeviceId: any, categoryId: any) {
         _Category.findOneAndUpdate({ "_id": categoryId }, { $push: { "devices": DeviceId } },

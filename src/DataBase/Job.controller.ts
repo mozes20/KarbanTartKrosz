@@ -8,9 +8,9 @@ import mongoose from 'mongoose';
 const _schema = new Schema<IJob>({
 
     CategoryId: { type: Schema.Types.ObjectId, ref: "Category" },
-    DeviceId: { type: Schema.Types.ObjectId, ref:"Device"},
-    UserId: { type: Schema.Types.ObjectId, ref:"User"},
-    ErrorDate: { type: Date},
+    DeviceId: { type: Schema.Types.ObjectId, ref: "Device" },
+    UserId: { type: Schema.Types.ObjectId, ref: "User" },
+    ErrorDate: { type: Date },
     Status: { type: Number },
     Priority: { type: Number },
     ErrorDescription: { type: String },
@@ -86,9 +86,19 @@ export class JobController {
     }
 
 
-    getAllJobs(req: any, res: any, next: any) {
+    getAllJobsDevice(req: any, res: any, next: any) {
         let id = req.query.id;
-        _Job.find().populate({ path: 'CategoryId' }).populate({ path: 'DeviceId', populate: { path: 'Category' } }).then(Jobs => {
+        _Job.find().populate({ path: 'DeviceId', populate: { path: 'Category' } }).then(Jobs => {
+            if (Jobs === null) {
+                return res.status(400).send({ message: "No Job Was Not Found" });
+            } else {
+                return res.status(200).json(Jobs);
+            }
+        })
+    }
+    getAllJobsCat(req: any, res: any, next: any) {
+        let id = req.query.id;
+        _Job.find().populate({ path: 'CategoryId' }).then(Jobs => {
             if (Jobs === null) {
                 return res.status(400).send({ message: "No Job Was Not Found" });
             } else {
@@ -103,7 +113,15 @@ export class JobController {
             if (job === null) {
                 return res.status(400).send({ message: "Job Was Not Found" });
             }
-            _Job.updateOne({ _id: req.body.jobId }, { Status: job.Status + 1 })
+            if (!job.Status) {
+                job.Status = 0
+            }
+            if (job.Status + 1 <= 4) {
+                _Job.findOneAndUpdate({ _id: req.body.jobId }, { Status: job.Status + 1 },
+                    { safe: true, upsert: true, new: true }).then(data => {
+
+                    })
+            }
             return res.status(200).send({ message: "Job Was edited" });
         })
     }
@@ -113,23 +131,38 @@ export class JobController {
             if (job === null) {
                 return res.status(400).send({ message: "Job Was Not Found" });
             }
-            _Job.updateOne({ _id: req.body.jobId }, { Status: -1 })
+            _Job.findOneAndUpdate({ _id: req.body.jobId }, { Status: -1 }, { safe: true, upsert: true, new: true }).then(data => {
+
+            })
             return res.status(200).send({ message: "Job Was cancled" });
         })
     }
-    
-    async addUserToJob(req: any, res: any, next: any){
-        _Job.findOneAndUpdate({"_id": req.body.jobId},{"UserId":req.user.user_id},
-        { safe: true, upsert: true, new: true }).then(data => {
-            return res.status(201).send({ message: "Create completed" })
-        }).catch(e => {
-            return res.status(400).send({ message: "Create failed" })
-        });
-        
+
+    async addUserToJob(req: any, res: any, next: any) {
+        _Job.findOneAndUpdate({ "_id": req.body.jobId }, { "UserId": req.user.user_id },
+            { safe: true, upsert: true, new: true }).then(data => {
+                return res.status(201).send({ message: "Create completed" })
+            }).catch(e => {
+                return res.status(400).send({ message: "Create failed" })
+            });
+
     }
 
-    async getJobsToUser(req: any, res: any, next: any) {
-
+    async getJobsToUserCat(req: any, res: any, next: any) {
+        _Job.find({ UserId: req.user.user_id }).populate({ path: 'CategoryId' }).then(job => {
+            if (job === null) {
+                return res.status(400).send({ message: "There is no job" });
+            }
+            return res.status(200).json(job);
+        })
+    }
+    async getJobsToUserDevice(req: any, res: any, next: any) {
+        _Job.find({ UserId: req.user.user_id }).populate({ path: 'DeviceId', populate: { path: 'Category' } }).then(job => {
+            if (job === null) {
+                return res.status(400).send({ message: "There is no job" });
+            }
+            return res.status(200).json(job);
+        })
     }
 
 

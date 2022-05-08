@@ -1,5 +1,5 @@
 import { Console } from 'console';
-import { UserDbController } from './../DataBase/User.controller';
+import { UserDbController } from '../DataBase/User.controller';
 
 var jwt = require('jsonwebtoken');
 
@@ -21,7 +21,8 @@ export default class Auth {
     }
     return next();
   }
- checkRole = (permissions: Array<number>) => {
+  
+ checkRole (permissions: Array<number>) {
   return async  (req: any, res: any, next: any) => {
     const userController = new UserDbController();
     let permission = userController.getUserRole(req.user.user_id).then((permission:any)=>{

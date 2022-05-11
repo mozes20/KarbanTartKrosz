@@ -19,25 +19,15 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import axios from '../api/axios';
 import { Description } from '@mui/icons-material';
+import { DataGrid } from '@mui/x-data-grid';
 
 const columns = [
-	{ id: 'id', label: 'ID', minWidth: 100 },
-	{ id: 'device', label: 'Device', minWidth: 170 },
-	{ id: 'details', label: 'Details', minWidth: 170 },
-	{ id: 'status', label: 'Status', minWidth: 100 },
-	{ id: 'time', label: 'Time', minWidth: 170 },
+	{ field: '_id', headerName: 'ID', width: 70 },
+  { field: 'Name', headerName: 'Device ame', width: 130 },
+  { field: 'Location', headerName: 'Location', width: 130 },
+  { field: 'ErrorDate', headerName: 'Error Date', width: 130 },
+  { field: 'ErrorDescription', headerName: 'Error Description', width: 130 },
 ];
-
-function createData(id, device, details, status,time) {
-	return { id, device, details, status, time };
-}
-
-const rows = [
-	createData('1', 'Teszt1', 'Karbantartó', "OK", '05:22 pm'),
-	createData('2', 'Teszt2', 'Karbantartó', 'OK'),
-	createData('3', 'Teszt3', 'Karbantartó', 'OK'),
-];
-
 
 const Maintenance = () => {
 	const [devices, setDevices] = React.useState([]);
@@ -51,9 +41,10 @@ const Maintenance = () => {
 	const [category, setCategory] = React.useState('');
 	const [jobName, setJobName] = React.useState('');
 	const [jobs, setJobs] = React.useState([]);
+	const [deviceArray, setDeviceArray] = React.useState([]);
 
 	React.useEffect(() => {
-		const URL = '/job';
+		const URL = '/jobsDevice';
 		axios.get(URL, {
 			params:
 			{
@@ -61,8 +52,12 @@ const Maintenance = () => {
 			}
 		})
 			.then((response) => {
-				setCategories(response?.data)
+				setJobs(response?.data)
 				console.log("jobs: " + response.data)
+				jobs.map((d)=> {
+					setDeviceArray(deviceArray => [...deviceArray,d.DeviceId]) 
+				})
+				/* console.log("device array: "+deviceArray[0].Name) */
 			})
 	}, [])
 
@@ -78,6 +73,7 @@ const Maintenance = () => {
 			.then((response) => {
 				setCategories(response?.data)
 				console.log(response?.data)
+
 			})
 	}, [])
 
@@ -95,15 +91,15 @@ const Maintenance = () => {
 			})
 	}, [])
 	const registerJob = () => {
-		axios.post('/emergencyjob',{
+		axios.post('/emergencyjob', {
 			"deviceid": device,
 			"ErrorDescription": description,
 			"JobName  ": jobName,
 			token: localStorage.getItem('token')
 		})
-		.then((response) => {
-			console.log(response)
-		})
+			.then((response) => {
+				console.log(response)
+			})
 	}
 
 	const HandleChangeCategory = (event) => {
@@ -140,46 +136,30 @@ const Maintenance = () => {
 							<div className='mb-4'>
 								<label htmlFor="addskill" className=' text-gray-700 text-sm font-bold mx-2 mb-10'>	Register Job </label>
 							</div>
-							{/* <div className='mt-4'>
-							<FormControl fullWidth >
-								<InputLabel id="demo-simple-select-label mt-10">Category</InputLabel>
-								<Select
-									value={category}
-									label="categories"
-									onChange={HandleChangeCategory}
-								>
-									{
-										categories?.map((mc) => (
-											<MenuItem key={mc._id} value={mc._id}>{mc.Name}</MenuItem>
-										))
-									}
-								</Select>
-							</FormControl>
-							</div> */}
 							<div className='mt-4'>
-							<FormControl fullWidth >
-								<InputLabel >Device</InputLabel>
-								<Select
-									value={device}
-									label="devices"
-									onChange={(e) => setDevice(e.target.value)}
-								>
-									{
-										devices?.map((d) => (
-											<MenuItem key={d._id} value={d._id}>{d.Name}</MenuItem>
-										))
-									}
-								</Select>
-							</FormControl>
+								<FormControl fullWidth >
+									<InputLabel >Device</InputLabel>
+									<Select
+										value={device}
+										label="devices"
+										onChange={(e) => setDevice(e.target.value)}
+									>
+										{
+											devices?.map((d) => (
+												<MenuItem key={d._id} value={d._id}>{d.Name}</MenuItem>
+											))
+										}
+									</Select>
+								</FormControl>
 							</div>
 							<div className='mt-4'>
-								<TextField label="Details" color='grey' focused 
+								<TextField label="Details" color='grey' focused
 									value={description}
 									onChange={(e) => setDescription(e.target.value)}
 								/>
 							</div>
 							<div className='mt-4'>
-								<TextField label="Job name" color='grey' focused 
+								<TextField label="Job name" color='grey' focused
 									value={jobName}
 									onChange={(e) => setJobName(e.target.value)}
 								/>
@@ -199,7 +179,7 @@ const Maintenance = () => {
 								</LocalizationProvider>
 							</div>
 							<div className='flex justify-end my-2'>
-								<button className="bg-gray-500 hover:bg-gray-700 text-white text-sm font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+								<button className="bg-gray-500 hover:bg-gray-700 text-white text-sm font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
 									onClick={registerJob}
 								>
 									REGISTER JOB
@@ -208,62 +188,17 @@ const Maintenance = () => {
 						</div>
 					</Card>
 				</div>
-
-				<div>
-					<Paper sx={{ width: '100%', overflow: 'hidden' }} >
-						<TableContainer sx={{ maxHeight: 440 }}>
-							<Table stickyHeader aria-label="sticky table">
-								<TableHead>
-									<header className='font-bold ml-4'>Jobs</header>
-									<TableRow>
-										{columns.map((column) => (
-											<TableCell
-												key={column.id}
-												align={column.align}
-												style={{ minWidth: column.minWidth }}
-											>
-												{column.label}
-											</TableCell>
-										))}
-									</TableRow>
-								</TableHead>
-								<TableBody>
-									{rows
-										.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-										.map((row) => {
-											return (
-												<TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-													{columns.map((column) => {
-														const value = row[column.id];
-														return (
-															<TableCell key={column.id} align={column.align}>
-																{column.format && typeof value === 'number'
-																	? column.format(value)
-																	: value}
-															</TableCell>
-														);
-													})}
-												</TableRow>
-											);
-										})}
-								</TableBody>
-							</Table>
-						</TableContainer>
-						<TablePagination
-							rowsPerPageOptions={[10, 25, 100]}
-							component="div"
-							count={rows.length}
-							rowsPerPage={rowsPerPage}
-							page={page}
-							onPageChange={handleChangePage}
-							onRowsPerPageChange={handleChangeRowsPerPage}
-						/>
-
-					</Paper>
+				<div style={{ height: 400, width: '100%' }} className='bg-white'>
+					<DataGrid
+					/*  getRowId={(row) => row.internalId} */
+						rows={[]}
+						columns={columns}
+						pageSize={5}
+						rowsPerPageOptions={[5]}
+						checkboxSelection
+					/>
 				</div>
-
 			</div>
-
 		</div>
 
 	);

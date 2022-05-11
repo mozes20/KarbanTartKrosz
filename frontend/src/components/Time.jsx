@@ -57,7 +57,7 @@ export const Time = () => {
 				<Card sx={{ minWidth: 120 }} className='bg-white p-2'>
 					<div>
 						<div className='mb-4'>
-							<label htmlFor="addskill" className=' text-gray-700 text-sm font-bold mx-2 mb-10'>Add time inteval</label>
+							<label htmlFor="addskill" className=' text-gray-700 text-sm font-bold mx-2 mb-10'>Modify category</label>
 						</div>
 						<div>
 							<FormControl fullWidth >

@@ -20,31 +20,39 @@ import Select from '@mui/material/Select';
 import axios from '../api/axios';
 import { Description } from '@mui/icons-material';
 import { DataGrid } from '@mui/x-data-grid';
+import Jobs from './Jobs';
+import { gridColumnsMetaSelector } from '@material-ui/data-grid';
 
 const columns = [
-	{ field: '_id', headerName: 'ID', width: 70 },
-  { field: 'Name', headerName: 'Device ame', width: 130 },
-  { field: 'Location', headerName: 'Location', width: 130 },
-  { field: 'ErrorDate', headerName: 'Error Date', width: 130 },
-  { field: 'ErrorDescription', headerName: 'Error Description', width: 130 },
+	{ field: '_id', headerName: 'job ID', width: 220},
+	{ field: 'Name', headerName: 'Device name', width: 130 },
+	{ field: 'Location', headerName: 'Location', width: 130 },
+	{ field: 'ErrorDate', headerName: 'Error Date', width: 220 },
+	{ field: 'ErrorDescription', headerName: 'Error Description', width: 130 },
+	{ field: 'Status', headerName: 'Status', type: 'number', editable: true, width: 70 },
+	{ field: 'Skills', headerName: 'Skills',  width: 300 },
 ];
 
 const Maintenance = () => {
 	const [devices, setDevices] = React.useState([]);
 	const [device, setDevice] = React.useState('');
 	const [description, setDescription] = React.useState('');
-
+	const [selectedData, setSelectedData] = React.useState([]);
 	const [value, setValue] = React.useState(new Date());
-	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = React.useState(10);
 	const [categories, setCategories] = React.useState([]);
 	const [category, setCategory] = React.useState('');
 	const [jobName, setJobName] = React.useState('');
 	const [jobs, setJobs] = React.useState([]);
-	const [deviceArray, setDeviceArray] = React.useState([]);
+	const [deviceID, setDeviceID] = React.useState([]);
+	const [users, setUsers] = React.useState([]);
+	const [user, setUser] = React.useState('');
+	const [canSelect, setCanSelect] = React.useState(true);
+	const [temp, setTemp] = React.useState([]);
 
 	React.useEffect(() => {
-		const URL = '/jobsDevice';
+		let i = 0
+		setDeviceID([])
+		const URL = '/jobDev';
 		axios.get(URL, {
 			params:
 			{
@@ -52,18 +60,29 @@ const Maintenance = () => {
 			}
 		})
 			.then((response) => {
-				setJobs(response?.data)
-				console.log("jobs: " + response.data)
-				jobs.map((d)=> {
-					setDeviceArray(deviceArray => [...deviceArray,d.DeviceId]) 
+				setJobs(response.data)
+				console.log(response.data[0]._id)
+				response.data.map((d) => {
+					i++
+					let obj = {
+						_id: d._id,
+						Name: d.DeviceId.Name,
+						Location: d.DeviceId.Location,
+						ErrorDate: d.ErrorDate,
+						ErrorDescription: d.ErrorDescription,
+						Status: d.Status,
+						Skills: d.DeviceId.Category.skills,
+					}
+					/* console.log("skills")
+					console.log(d.DeviceId.Category.skills) */
+					setDeviceID(deviceID => [...deviceID, obj])
 				})
-				/* console.log("device array: "+deviceArray[0].Name) */
+				/* deviceID.map((d) => (console.log(d))) */
 			})
 	}, [])
 
-
 	React.useEffect(() => {
-		const URL = '/categories';
+		const URL = '/user';
 		axios.get(URL, {
 			params:
 			{
@@ -71,9 +90,7 @@ const Maintenance = () => {
 			}
 		})
 			.then((response) => {
-				setCategories(response?.data)
-				console.log(response?.data)
-
+				setUsers(response?.data.data)
 			})
 	}, [])
 
@@ -87,9 +104,10 @@ const Maintenance = () => {
 		})
 			.then((response) => {
 				setDevices(response?.data)
-				console.log(response?.data)
 			})
 	}, [])
+
+
 	const registerJob = () => {
 		axios.post('/emergencyjob', {
 			"deviceid": device,
@@ -101,31 +119,42 @@ const Maintenance = () => {
 				console.log(response)
 			})
 	}
-
-	const HandleChangeCategory = (event) => {
-		setCategory(event.target.value)
-		console.log("category: " + category)
-
-		axios.get('/alldevic', {
-			params:
-			{
-				/* "category": category, */
-				token: localStorage.getItem('token')
+	const [open, setOpen] = React.useState(true);
+	const addJobToEmployee = () => {
+		let i = 0
+		users.map((u) =>{
+			
+			if(u._id == user && u.Skills.length != 0){
+				console.log("u.skills: ")
+			console.log(u.Skills)
+				u.Skills.map((s) => {
+					console.log(selectedData)
+					if(selectedData[0].Skills.length != 0){
+						selectedData[0].Skills.map((sd) => {
+							console.log("asd")
+							if(sd == s){
+								i++
+							}
+						})
+					}
+				})
 			}
 		})
-			.then((response) => {
-				setDevices(response?.data)
-				console.log('setf: ' + devices[0].Name)
-				console.log("devices: " + response?.data[0].Name)
+		if(i == selectedData[0].Skills.length){
+			console.log("megvan a kepesitese a munkahoz")
+			axios.put('/status', {
+				jobId: selectedData[0]._id,
+				token: localStorage.getItem('token')
 			})
+				.then((response) => {
+					console.log(response)
+				})
+		}
+		
 	}
-	const handleChangePage = (event, newPage) => {
-		setPage(newPage);
-	};
 
-	const handleChangeRowsPerPage = (event) => {
-		setRowsPerPage(+event.target.value);
-		setPage(0);
+	const handleClick = () => {
+		setOpen(!open);
 	};
 	return (
 		<div>
@@ -188,16 +217,79 @@ const Maintenance = () => {
 						</div>
 					</Card>
 				</div>
-				<div style={{ height: 400, width: '100%' }} className='bg-white'>
+				<div>
+					{/* <Jobs /> */}
+				</div>
+				<div style={{ height: 400, width: '100%' }} className='bg-white mr-12'>
 					<DataGrid
-					/*  getRowId={(row) => row.internalId} */
-						rows={[]}
+						getRowId={(row) => row._id}
+						rows={deviceID}
 						columns={columns}
-						pageSize={5}
-						rowsPerPageOptions={[5]}
-						checkboxSelection
+						pageSize={10}
+						rowsPerPageOptions={[10]}
+						checkboxSelection ={true}
+						onSelectionModelChange={(ids) => {
+							const selectedIDs = new Set(ids)
+							const selectedRowData = deviceID.filter((row) =>
+								selectedIDs.has(row._id.toString())
+							)							
+							setSelectedData(selectedRowData)
+							console.log(selectedRowData)
+						}
+						}
 					/>
 				</div>
+			</div>
+
+			<div className="flex justify-end mt-2 mr-12">
+				{
+					!open ?
+						<button className="justify-end bg-gray-500 hover:bg-gray-700 text-white text-sm font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+							onClick={handleClick}
+						>
+							ATTACH JOB
+						</button> :
+						open ?
+							<section >
+								<div className="justify-end flex ">
+									<button className="justify-end bg-gray-500 hover:bg-gray-700 text-white text-sm font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+										onClick={handleClick}
+									>
+										Close
+									</button>
+								</div>
+								<div className='md:flex md:justify-center mt-4'>
+									<div className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'>
+										<label htmlFor="username" className=' text-gray-700 text-sm font-bold mx-2'>Job:</label>
+										<span className='mr-4'>{selectedData.length != 0 ? selectedData[0].Name + " "+selectedData[0].ErrorDescription + " " +selectedData[0].Location: "no job selected"}</span>
+
+										<FormControl className='w-60'>
+											<InputLabel >Employee</InputLabel>
+											<Select
+												value={user}
+												label="users"
+												onChange={(e) => setUser(e.target.value)}
+											>
+												{
+													users?.map((d) => (
+														<MenuItem key={d._id} value={d._id}>{d.Username}</MenuItem>
+													))
+												}
+											</Select>
+										</FormControl>
+										<div className="flex items-center justify-end mt-5">
+											<button className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+												onClick={addJobToEmployee}
+											>
+												Attach job to Employee
+											</button>
+										</div>
+									</div>
+								</div>
+							</section>
+							:
+							null
+				}
 			</div>
 		</div>
 

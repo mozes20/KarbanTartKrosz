@@ -25,9 +25,10 @@ const App = () => (
         <Route path='maintenance' element={<Maintenance />} />
         <Route path='employees' element={<Employees />} />
         <Route path='categories' element={<Dropdown />} />
-        <Route element={<RequireAuth />}>
+        <Route path="admintable" element={<AdminTable />} />
+        <Route element={<RequireAuth allowedRoles={1}/>}>
           <Route path='admin' element={<Admin />} />
-          <Route path="admintable" element={<AdminTable />} />
+          
           
 
         </Route>

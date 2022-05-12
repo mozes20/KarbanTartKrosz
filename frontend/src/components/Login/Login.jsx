@@ -18,6 +18,7 @@ const Login = () => {
 
 	const [user, setUser] = useState('');
 	const [password, setPwd] = useState('');
+	const [role, setRole] = useState('');
 	const [errMsg, setErrMsg] = useState('');
 
 	useEffect(() => {
@@ -38,13 +39,21 @@ const Login = () => {
 			const token = response?.data?.token;
 			localStorage.setItem('token', token);
 			console.log(response?.data)
-			const response2 = await axios.get('/maincategory',
-				{ params: {token:token} }
-			);
-			console.log(response2?.data)
-			/* 			
-						const roles = response?.data?.roles; */
-			setAuth({ user, password, token });
+
+/* 			axios.get('/user', {
+				params:
+				{
+					token: token
+				}
+			})
+				.then((response) => {
+					setRole(response?.data?.data[0].Permission)
+					console.log("role: " + response?.data?.data[0].Permission)
+					setAuth({ user, password, role, token });
+				}) */
+			
+			console.log(role)
+			setRole('');
 			setUser('');
 			setPwd('');
 			navigate(from, { replace: true });

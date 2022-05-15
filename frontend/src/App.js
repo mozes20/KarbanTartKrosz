@@ -11,6 +11,7 @@ import Dropdown from './components/Dropdown';
 import { Admin } from './components/Admin';
 import  Maintenance  from './components/Maintenance';
 import Employees from './components/Employees';
+import MyJobs from './components/MyJobs';
 
 const App = () => (
 
@@ -26,6 +27,7 @@ const App = () => (
         <Route path='employees' element={<Employees />} />
         <Route path='categories' element={<Dropdown />} />
         <Route path="admintable" element={<AdminTable />} />
+        <Route path="myJobs" element={<MyJobs />} />
         <Route element={<RequireAuth allowedRoles={1}/>}>
           <Route path='admin' element={<Admin />} />
           

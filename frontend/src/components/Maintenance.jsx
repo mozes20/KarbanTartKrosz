@@ -142,6 +142,15 @@ const Maintenance = () => {
 		})
 		if(i == selectedData[0].Skills.length){
 			console.log("megvan a kepesitese a munkahoz")
+
+			axios.put('/usertojob', {
+				jobId: selectedData[0]._id,
+				token: localStorage.getItem('token')
+			})
+				.then((response) => {
+					console.log(response)
+				})
+				
 			axios.put('/status', {
 				jobId: selectedData[0]._id,
 				token: localStorage.getItem('token')

@@ -11,6 +11,7 @@ function Navbar() {
     { name: "MAINTENANCE", link: "/Maintenance" },
     { name: "ADMIN", link: "/admin" },
     { name: "CATEGORIES", link: "/categories" },
+    { name: "MyJobs", link: "/myJobs" },
     { name: "LOGIN", link: "/login" },
 
   ];
